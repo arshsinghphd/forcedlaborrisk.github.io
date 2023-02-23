@@ -12,18 +12,7 @@ st.title(page_title)
 
 years = ["2021", "2020", "2019"]
 commodity = ["52 - Cotton"]
-
-partners = pd.read_csv('C:/Users/arsha/OneDrive/LearningProgramming/LearningML/Projects/OpenTrade/Codes/partnerAreas.csv')
-# source: UN Comtrade
-reporters = pd.read_csv('C:/Users/arsha/OneDrive/LearningProgramming/LearningML/Projects/OpenTrade/Codes/reporterAreas.csv')
-# source: UN Comtrade
-areas = pd.merge(left = reporters, right = partners, on = 'id', how = 'inner')
-# since 'id' 'all' is not useful, we will remove it from our list
-areas = areas[areas['id'] != 'all']
-areas = areas[['id', 'text_x']]
-areas['id'] = areas['id'].astype(int)
-areas.rename(columns={'text_x' : 'text'}, inplace=True)
-areas.set_index('id', inplace = True)
+areas = pd.read_csv('data/areas.csv')
 
 # -- Input Form --
 
