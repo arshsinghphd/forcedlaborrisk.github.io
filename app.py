@@ -36,5 +36,9 @@ with st.form("entry_form"):
     "---"
     submitted = st.form_submit_button()   
 
-# --- results ---
+# -- Looking up --
+
+
+
+# --- Output ---
 st.header("Partnering Countries")
