@@ -5,12 +5,15 @@ from PIL import Image
 page_title = "Open Trade Data Pilot (Dummy)"
 layout = "centered"
 icon = 'images/STREAMS-logo-v2_White_800.png'
-logo = Image.open('images/Verite-Wordmark-Web-Small-2.jpg')
 
-st.image(logo, caption='verite_logo')
 
 st.set_page_config(page_title = page_title, layout=layout, page_icon = icon)
 st.title(page_title)
+
+# -- Logo --
+logo = Image.open('images/Verite-Wordmark-Web-Small-2.jpg')
+
+st.image(logo)
 
 # -- Drop Down Menus --
 
