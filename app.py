@@ -5,7 +5,7 @@ page_title = "Open Trade Data Pilot (Dummy)"
 layout = "centered"
 
 
-st.set_page_config(page_title = page_title, layout=layout)
+st.set_page_config(page_title = page_title, layout=layout, icon = 'data/STREAMS-logo-v2_White_800.png')
 st.title(page_title)
 
 # -- Drop Down Menus --
