@@ -3,9 +3,9 @@ import pandas as pd
 
 page_title = "Open Trade Data Pilot (Dummy)"
 layout = "centered"
+icon = 'data/STREAMS-logo-v2_White_800.png'
 
-
-st.set_page_config(page_title = page_title, layout=layout, page_icon = 'data/STREAMS-logo-v2_White_800.png')
+st.set_page_config(page_title = page_title, layout=layout, page_icon = icon)
 st.title(page_title)
 
 # -- Drop Down Menus --
