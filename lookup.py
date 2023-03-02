@@ -1,15 +1,19 @@
-import streamlit as st
-import pandas as pd
-import requests 
-import time
 import node
 
-def printNodes(country):
-    st.write('--------------------------\|'*country.depth, country.name)
-    if len(country.imp_partners) == 0:
-        return
-    for partner in country.imp_partners:
-        printNodes(partner)
+import networkx as nx
+import pandas as pd
+from pyvis.network import Network
+import requests 
+import streamlit as st
+
+def makeNxGraph(node, nx_graph):
+    nx_graph.add_node(node.code, label = node.name)
+    if node.imp_partners:
+        for partner in node.imp_partners:
+            nx_graph.add_node(partner.code, label = partner.name)
+            nx_graph.add_edge(node.code, partner.code)
+            makeNxGraph(partner, nx_graph)
+    return 
     
 def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
     areas = pd.read_csv('data/areas.csv', )
@@ -62,8 +66,13 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
             next_list.extend(country.imp_partners)
         curr_list = next_list
         level += 1
-        
-    printNodes(areas_nodes[reporterCode])
+    nx_graph = nx.Graph()
+    makeNxGraph(areas_nodes[reporterCode], nx_graph)
+    pyvis_net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white")
+    pyvis_net.from_nx(nx_graph)
+    pyvis_net.write_html("images/result.html")
+    return
+    
     
 if __name__ == '__main__':
     deep_search(reporterCode,year,comm_codes,imp_pc,levels_n)
