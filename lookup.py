@@ -6,24 +6,23 @@ from pyvis.network import Network
 import requests 
 import streamlit as st
 
-# def makeNxGraph(node, nx_graph):
-    # nx_graph.add_node(node.code, label = node.name)
-    # if node.imp_partners:
-        # for partner in node.imp_partners:
-            # nx_graph.add_node(partner.code, label = partner.name)
-            # nx_graph.add_edge(node.code, partner.code)
-            # makeNxGraph(partner, nx_graph)
-    # return 
-    
 def makeNxGraph(node, nx_graph):
-    if node not in nx_graph.nodes():
-        nx_graph.add_node(node.name, title = 'Imports 10% of parent', color = node.color)
+    if node.name not in nx_graph.nodes():
+        nx_graph.add_node(node.name, 
+                            title = 'Exporter', 
+                            color = node.color, 
+                            size = 12)
     if node.imp_partners:
         for partner in node.imp_partners:
-            nx_graph.add_node(partner.name, title = 'Imports 10% of parent', color = partner.color)
+            nx_graph.add_node(partner.name, 
+                            title = 'Imports {:.3f}% of {}\'s export'
+                            .format(partner.trade_value, partner.parent), 
+                            color = partner.color,
+                            size = 12 - 2*partner.depth
+                            )
             nx_graph.add_edge(node.name, partner.name)
             makeNxGraph(partner, nx_graph)
-    return
+    return 
     
 def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
     areas = pd.read_csv('data/areas.csv', )
@@ -57,10 +56,10 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
             tot_trade = 0
             for j in areas_nodes.values():
                 if j.color == 'white':
-                    trade_value = tradeMat.loc[i, str(j.code)]
-                    j.trade_value = trade_value 
+                    tv = tradeMat.loc[i, str(j.code)]
+                    j.trade_value = tv
                     trade.append(j)
-                    tot_trade += trade_value
+                    tot_trade += tv
             trade.sort(key = lambda x: x.trade_value, reverse=True)
             
             sum_trade = 0
@@ -68,9 +67,9 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
                 if sum_trade < (imp_pc * tot_trade/100):
                     if partner.color == 'white':
                         sum_trade += partner.trade_value
-                        partner.trade_value = 0
+                        partner.trade_value = 100*partner.trade_value/tot_trade
                         country.imp_partners.append(partner)
-                        partner.parent_code = i
+                        partner.parent = country.name
                         partner.color = 'red'
                         partner.depth = level
             next_list.extend(country.imp_partners)
@@ -79,7 +78,7 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
     nx_graph = nx.Graph()
     makeNxGraph(areas_nodes[reporterCode], nx_graph)
     pyvis_net = Network(height="700px", width="100%", bgcolor="#222222", font_color="white")
-    pyvis_net.from_nx(nx_graph, default_node_size = 10)
+    pyvis_net.from_nx(nx_graph)
     pyvis_net.write_html("images/result.html")
     return
     
