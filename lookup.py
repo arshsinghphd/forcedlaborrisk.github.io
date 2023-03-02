@@ -16,7 +16,8 @@ import streamlit as st
     # return 
     
 def makeNxGraph(node, nx_graph):
-    nx_graph.add_node(node.name, val = node.code)
+    if node not in nx_graph.nodes():
+        nx_graph.add_node(node.name, val = node.code)
     if node.imp_partners:
         for partner in node.imp_partners:
             nx_graph.add_node(partner.name, val = partner.code)
@@ -80,7 +81,6 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
     pyvis_net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white")
     pyvis_net.from_nx(nx_graph)
     pyvis_net.write_html("images/result.html")
-    nx.write_graphml_lxml(nx_graph,  "images/result2.graphml")
     return
     
     
