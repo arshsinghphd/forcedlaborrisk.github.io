@@ -17,12 +17,10 @@ import streamlit as st
     
 def makeNxGraph(node, nx_graph):
     if node not in nx_graph.nodes():
-        nx_graph.add_node(node.name, val = node.code, 
-                                    color = node.color)
+        nx_graph.add_node(node.name, title = 'Imports 10% of parent', color = node.color)
     if node.imp_partners:
         for partner in node.imp_partners:
-            nx_graph.add_node(partner.name, val = partner.code, 
-                                            color = partner.color)
+            nx_graph.add_node(partner.name, title = 'Imports 10% of parent', color = partner.color)
             nx_graph.add_edge(node.name, partner.name)
             makeNxGraph(partner, nx_graph)
     return
