@@ -19,7 +19,7 @@ def makeNxGraph(node, nx_graph):
     nx_graph.add_node(node.name, val = node.depth)
     if node.imp_partners:
         for partner in node.imp_partners:
-            nx_graph.add_node(partner.name)
+            nx_graph.add_node(partner.name, val = partner.depth)
             nx_graph.add_edge(node.name, partner.name)
             makeNxGraph(partner, nx_graph)
     return
