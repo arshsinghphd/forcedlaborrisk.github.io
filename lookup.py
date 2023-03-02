@@ -6,14 +6,23 @@ from pyvis.network import Network
 import requests 
 import streamlit as st
 
+# def makeNxGraph(node, nx_graph):
+    # nx_graph.add_node(node.code, label = node.name)
+    # if node.imp_partners:
+        # for partner in node.imp_partners:
+            # nx_graph.add_node(partner.code, label = partner.name)
+            # nx_graph.add_edge(node.code, partner.code)
+            # makeNxGraph(partner, nx_graph)
+    # return 
+    
 def makeNxGraph(node, nx_graph):
-    nx_graph.add_node(node.code, label = node.name)
+    nx_graph.add_node(node.name)
     if node.imp_partners:
         for partner in node.imp_partners:
-            nx_graph.add_node(partner.code, label = partner.name)
-            nx_graph.add_edge(node.code, partner.code)
+            nx_graph.add_node(partner.name)
+            nx_graph.add_edge(node.name, partner.name)
             makeNxGraph(partner, nx_graph)
-    return 
+    return
     
 def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
     areas = pd.read_csv('data/areas.csv', )
