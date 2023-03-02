@@ -71,4 +71,4 @@ if submitted:
     lookup.deep_search(reporterCode, year, comm_code, imp_pc, levels_n)
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    components.html(source_code, height = 700)
+    components.html(source_code, height = 710)
