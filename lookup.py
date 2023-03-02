@@ -16,7 +16,7 @@ import streamlit as st
     # return 
     
 def makeNxGraph(node, nx_graph):
-    nx_graph.add_node(node.name)
+    nx_graph.add_node(node.name, val = 1)
     if node.imp_partners:
         for partner in node.imp_partners:
             nx_graph.add_node(partner.name)
