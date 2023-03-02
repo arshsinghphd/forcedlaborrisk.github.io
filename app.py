@@ -72,4 +72,3 @@ if submitted:
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height = 700)
-    st.image("images/result2.graphml")
