@@ -1,7 +1,8 @@
-import streamlit as st
-import pandas as pd
-from PIL import Image
 import lookup
+
+import streamlit as st
+import streamlit.components.v1 as components
+import pandas as pd
 import re
 
 page_title = "Open Trade Data Pilot (Dummy)"
@@ -39,7 +40,7 @@ with st.form("entry_form", clear_on_submit=False):
     comm_name = re.split('-',comm_code_raw)[1]
     "---"
     imp_pc = st.number_input(f"Define 'Important Partners' as the ones that add up to (%)", \
-            min_value=5,max_value=90,format="%i",step=5)
+            min_value=0,max_value=90,format="%i",step=10)
     levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", min_value=1,max_value=5,format="%i",step=1)
     "---"
     submitted = st.form_submit_button()   
@@ -62,6 +63,11 @@ if submitted:
     st.write("Search {} level(s) deep".format(levels_n))
     "---"
     st.write("Result")
+    st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
+    st.write("You can also hold the nodes and move them around to rearrange the map.")
     # for now overwriting commodity code as integer 52
     comm_code = 52
     lookup.deep_search(reporterCode, year, comm_code, imp_pc, levels_n)
+    HtmlFile = open("images/result.html", 'r', encoding='utf-8')
+    source_code = HtmlFile.read()
+    components.html(source_code, height = 700)
