@@ -22,6 +22,7 @@ st.image(logo)
 
 years = ["2021", "2020", "2019"]
 commodity = ["52 - Cotton"]
+trade = ['Import', 'Export', 'Both']
 areas = pd.read_csv('data/areas.csv')
 areas['name'] = areas['id'].astype(str)+ '-' + areas['text_x']
 areas = areas.set_index('id')
@@ -35,13 +36,14 @@ with st.form("entry_form", clear_on_submit=False):
     reporterCode = int(re.split('-',reporterName)[0])
     reporterName = re.split('-',reporterName)[1]
     col1, col2 = st.columns(2)
+    trade = col1.selectbox("Trade", trade)
     year = col1.selectbox("Year", years)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     comm_code = int(re.split('-',comm_code_raw)[0])
     comm_name = re.split('-',comm_code_raw)[1]
     "---"
-    imp_pc = st.number_input(f"Define 'Important Partners' as the ones that add up to (%)", \
-            min_value=0,max_value=90,format="%i",step=10)
+    imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
+            min_value=1,max_value=15,format="%i",step=1)
     levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", min_value=1,max_value=5,format="%i",step=1)
     "---"
     submitted = st.form_submit_button()   
@@ -54,13 +56,13 @@ st.header("Partnering Countries")
 if submitted:
     # fix commodity code with regex later
     year = int(year)
-    imp_pc = int(imp_pc)
+    imp_n = int(imp_n)
     levels_n = int(levels_n)
     
     st.write("You selected the following values.")
     st.write("County: {}".format(reporterName))
     st.write("Year: {}".format(year))
-    st.write("Define Important partners as the countries that make up {}% of the exports of {}.".format(imp_pc, comm_name))
+    st.write("The max number of trade partners{} of each node country.".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
     "---"
     st.write("Result")
@@ -68,7 +70,11 @@ if submitted:
     st.write("You can also hold the nodes and move them around to rearrange the map.")
     # for now overwriting commodity code as integer 52
     comm_code = 52
-    lookup.deep_search(reporterCode, year, comm_code, imp_pc, levels_n)
+    
+    # -- call the code --
+    lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
+    
+    # -- code has made an html file images/result.html --
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    components.html(source_code, height = 710)
+    components.html(source_code, height=710, scrolling=True)
