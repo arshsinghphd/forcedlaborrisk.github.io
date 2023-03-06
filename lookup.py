@@ -77,7 +77,8 @@ def deep_search(reporterCode, year, comm_codes, imp_pc, levels_n):
         level += 1
     nx_graph = nx.Graph()
     makeNxGraph(areas_nodes[reporterCode], nx_graph)
-    pyvis_net = Network(height="700px", width="100%", bgcolor="#222222", font_color="white")
+    pyvis_net = Network(height="700px", width="100%", bgcolor="#222222",
+                        font_color="white", filter_menu=True)
     pyvis_net.from_nx(nx_graph)
     pyvis_net.write_html("images/result.html")
     return
