@@ -83,4 +83,4 @@ if dataDown == 'CSV':
     st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
 
 # reset the image/result.html to default numbers    
-lookup.deep_search(reporterCode, year, comm_code, imp_n, 1)
+lookup.deep_search(0, year, comm_code, imp_n, 1)
