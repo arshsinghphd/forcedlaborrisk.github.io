@@ -73,13 +73,10 @@ if submitted:
 st.header("Partnering Countries")
 # for now overwriting commodity code as integer 52
 comm_code = 52
-if not submitted:
-    st.write("An example of the output with default values.")
     
-if submitted:
-    st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
-    st.write("You can also hold the nodes and move them around to rearrange the map.")
-
+st.write("You can zoom in and out of the frame below to see details.")
+st.write("You can also hold the nodes and move them around to rearrange the map.")
+st.write("You also have the option to download the data in a table (see bottom of the page).")
 # -- call the code --
 lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
 
