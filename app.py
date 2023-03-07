@@ -35,12 +35,16 @@ with st.form("entry_form", clear_on_submit=False):
     reporterName = st.selectbox(f"Select Country",areas)
     reporterCode = int(re.split('-',reporterName)[0])
     reporterName = re.split('-',reporterName)[1]
+    
     col1, col2 = st.columns(2)
     trade = col1.selectbox("Trade", trade)
-    year = col1.selectbox("Year", years)
+    
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     comm_code = int(re.split('-',comm_code_raw)[0])
     comm_name = re.split('-',comm_code_raw)[1]
+    
+    year = col1.selectbox("Year", years)
+    
     "---"
     imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
             min_value=1,max_value=15,format="%i",step=1)
@@ -56,17 +60,23 @@ if submitted:
     imp_n = int(imp_n)
     levels_n = int(levels_n)
     st.write("You selected the following values.")
+    st.write()
     st.write("County: {}".format(reporterName))
+    st.write("Trade Type: {}".format(trade))
+    st.write("Commodity: {}".format(comm_name))
     st.write("Year: {}".format(year))
     st.write("The max number of trade partners{} of each node country.".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
-    "---"
     
+    "---"
+
 st.header("Partnering Countries")
-st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
-st.write("You can also hold the nodes and move them around to rearrange the map.")
 # for now overwriting commodity code as integer 52
 comm_code = 52
+
+if submitted:
+    st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
+    st.write("You can also hold the nodes and move them around to rearrange the map.")
 
 # -- call the code --
 lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
