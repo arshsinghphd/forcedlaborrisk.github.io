@@ -74,7 +74,8 @@ st.header("Partnering Countries")
 # for now overwriting commodity code as integer 52
 comm_code = 52
     
-st.write("You can zoom in and out of the frame below to see details.")
+st.write("You can zoom in and out of the frame below to see details if illegible.")
+st.write("You can see trade share by hovering over the dots/nodes.")
 st.write("You can also hold the nodes and move them around to rearrange the map.")
 st.write("You also have the option to download the data in a table (see bottom of the page).")
 # -- call the code --
