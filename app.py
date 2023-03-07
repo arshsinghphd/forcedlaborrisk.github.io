@@ -78,9 +78,9 @@ components.html(source_code, height=710, scrolling=True)
 dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))    
     
 if dataDown == 'Excel':
-    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
+    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download Table.xls")
 if dataDown == 'CSV':
-    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
+    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download Table.csv")
 
 # reset the image/result.html to default numbers    
 lookup.deep_search(4, 2021, 52, 1, 1)
