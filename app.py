@@ -73,7 +73,9 @@ if submitted:
 st.header("Partnering Countries")
 # for now overwriting commodity code as integer 52
 comm_code = 52
-
+if not submitted:
+    st.write("An example of the output with default values.")
+    
 if submitted:
     st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
     st.write("You can also hold the nodes and move them around to rearrange the map.")
