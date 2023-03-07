@@ -46,35 +46,41 @@ with st.form("entry_form", clear_on_submit=False):
             min_value=1,max_value=15,format="%i",step=1)
     levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", min_value=1,max_value=5,format="%i",step=1)
     "---"
-    submitted = st.form_submit_button()   
-
+    dataDown = ''
+    submitted = st.form_submit_button()
 
 # --- Output Area ---
-st.header("Partnering Countries")
-
-# -- Looking up --
 if submitted:
     # fix commodity code with regex later
     year = int(year)
     imp_n = int(imp_n)
     levels_n = int(levels_n)
-    
     st.write("You selected the following values.")
     st.write("County: {}".format(reporterName))
     st.write("Year: {}".format(year))
     st.write("The max number of trade partners{} of each node country.".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
     "---"
-    st.write("Result")
-    st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
-    st.write("You can also hold the nodes and move them around to rearrange the map.")
-    # for now overwriting commodity code as integer 52
-    comm_code = 52
     
-    # -- call the code --
-    lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
+st.header("Partnering Countries")
+st.write("Depending on your search, the names below may not be legible, but you can zoom in and out.")
+st.write("You can also hold the nodes and move them around to rearrange the map.")
+# for now overwriting commodity code as integer 52
+comm_code = 52
+
+# -- call the code --
+lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
+
+# -- code has made an html file images/result.html --
+HtmlFile = open("images/result.html", 'r', encoding='utf-8')
+source_code = HtmlFile.read()
+components.html(source_code, height=710, scrolling=True)
+dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))    
     
-    # -- code has made an html file images/result.html --
-    HtmlFile = open("images/result.html", 'r', encoding='utf-8')
-    source_code = HtmlFile.read()
-    components.html(source_code, height=710, scrolling=True)
+if dataDown == 'Excel':
+    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
+if dataDown == 'CSV':
+    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
+
+# reset the image/result.html to default numbers    
+lookup.deep_search(reporterCode, year, comm_code, imp_n, 1)
