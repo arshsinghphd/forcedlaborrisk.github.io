@@ -1,27 +1,30 @@
 import countryNode
-
-import networkx as nx
 import pandas as pd
 from pyvis.network import Network
 import requests 
 import streamlit as st
 
-def makeNxGraph(node, nx_graph):
-    if node.name not in nx_graph.nodes():
-        nx_graph.add_node(node.name, 
+def makePyvisGraph(node, pyvis_net):
+    if node.name not in pyvis_net.get_nodes():
+        pyvis_net.add_node(node.name, 
                             title = 'Exporter', 
                             color = node.color, 
                             size = 12)
+    sum_trade = 0
     if node.imp_partners:
         for partner in node.imp_partners:
-            nx_graph.add_node(partner.name, 
-                            title = 'Imports {:.3f}% of {}\'s export'
+            sum_trade += partner.trade_value
+            pyvis_net.add_node(partner.name, 
+                            title = 'Imports {:.2f}% of {}\'s export'
                             .format(partner.trade_value, partner.parent), 
                             color = partner.color,
                             size = 12 - 2*partner.depth
                             )
-            nx_graph.add_edge(node.name, partner.name)
-            makeNxGraph(partner, nx_graph)
+            pyvis_net.add_edge(node.name, partner.name,
+                        title = '{:.2f}%'.format(partner.trade_value))
+            makePyvisGraph(partner, pyvis_net)
+        pyvis_net.get_node(node.name)['title'] += '\n {:.2f}% of its exports go to following'.format(sum_trade)
+    
     return 
     
 def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
@@ -91,20 +94,41 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
         level += 1
     ####
     
-    #BLOCK 3
-    # Make nx graph rooted at the user provided country node
-    nx_graph = nx.Graph()
-    makeNxGraph(areas_nodes[reporterCode], nx_graph)
-    ####
+    # #BLOCK 3
+    # # Make nx graph rooted at the user provided country node
+    # nx_graph = nx.Graph()
+    # makeNxGraph(areas_nodes[reporterCode], nx_graph)
+    # ####
     
     #BLOCK 4
     # Make a pyvis graph from nx graph
     # save it as an html component
     pyvis_net = Network(height="700px", width="100%", 
-                        bgcolor="#222222", font_color="white")
-    pyvis_net.from_nx(nx_graph)
-    pyvis_net.write_html("images/result.html")
+                        bgcolor="#222222", font_color="white", 
+                        directed =True)
+    makePyvisGraph(areas_nodes[reporterCode], pyvis_net)
+    pyvis_net.write_html("images/result.html", local=True)
     ####
+    
+    #BLOCK 5
+    # Make excel and csv files
+    table = pd.DataFrame(columns = ['a','b','export'])
+    curr_list = [areas_nodes[reporterCode]]
+    index = 1
+    while level <= levels_n:
+        for country in curr_list:
+            next_list = country.imp_partners
+            for partner in next_list:
+                exp = str(round(partner.trade_value, 2))[:4]
+                table.loc[index] = pd.Series({'a':country.name, 'b':partner.name, 'export':exp})
+                index += 1
+        curr_list = next_list
+        level += 1
+    table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
+    table.to_csv("images/table.xls", sep = '\t' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
+    table.to_csv("images/table.csv", sep = ',' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
+    ####
+    
     return
     
     
