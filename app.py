@@ -65,7 +65,7 @@ if submitted:
     st.write("Trade Type: {}".format(trade))
     st.write("Commodity: {}".format(comm_name))
     st.write("Year: {}".format(year))
-    st.write("The max number of trade partners{} of each node country.".format(imp_n))
+    st.write("The max number of trade partners of each country: {}.".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
     
     "---"
