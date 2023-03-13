@@ -4,12 +4,19 @@ from pyvis.network import Network
 import requests 
 import streamlit as st
 
-def makePyvisGraph(node, pyvis_net):
+listfl = ['Georgia']
+
+def makePyvisGraph(node, pyvis_net, ncolor = 'white'):
+    if node.name in listfl:
+        ncolor = 'red'
+        
     if node.name not in pyvis_net.get_nodes():
         pyvis_net.add_node(node.name, 
                             title = 'Exporter', 
-                            color = node.color, 
+                            color = ncolor, 
                             size = 12)
+    else:
+        pyvis_net.get_node(node.name)['color'] = ncolor
     sum_trade = 0
     if node.imp_partners:
         for partner in node.imp_partners:
@@ -17,12 +24,15 @@ def makePyvisGraph(node, pyvis_net):
             pyvis_net.add_node(partner.name, 
                             title = 'Imports {:.2f}% of {}\'s export'
                             .format(partner.trade_value, partner.parent), 
-                            color = partner.color,
+                            color = ncolor,
                             size = 12 - 2*partner.depth
                             )
             pyvis_net.add_edge(node.name, partner.name,
                         title = '{:.2f}%'.format(partner.trade_value))
-            makePyvisGraph(partner, pyvis_net)
+            if ncolor == "white":
+                makePyvisGraph(partner, pyvis_net)
+            else:
+                makePyvisGraph(partner, pyvis_net, ncolor)
         pyvis_net.get_node(node.name)['title'] += '\n {:.2f}% of its exports go to following'.format(sum_trade)
     
     return 
@@ -43,7 +53,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     for j in tradeMat.index:
         if j == reporterCode:
             if j not in areas_nodes.keys():
-                areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0, 'red')
+                areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0)
         else:
             if j not in areas_nodes.keys():
                 areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
@@ -86,7 +96,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
                     partner.trade_value = 100*partner.trade_value/tot_trade
                     country.imp_partners.append(partner)
                     partner.parent = country.name
-                    partner.color = 'red'
+                    partner.color = 'green'
                     partner.depth = level
             country.trade_with_partners = sum_trade*100/tot_trade
             next_list.extend(country.imp_partners)
