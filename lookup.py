@@ -60,7 +60,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
                 areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     ####
     
-    #BLOCK 2
+    #BLOCK 2: Trade calculations
     # For level 1 iteration,
     # Start with the user provided country as the only node in 'curr_list'.
     # Make a list 'trade', of all nodes in areas_nodes it exports to.
@@ -106,8 +106,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     ####
     
     #BLOCK 3
-    # Make a pyvis graph from nx graph
-    # save it as an html component
+    # Make a pyvis graph and save it as an html
     pyvis_net = Network(height="700px", width="100%", 
                         bgcolor="#222222", font_color="white", 
                         directed=True)
@@ -116,18 +115,17 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     ####
     
     #BLOCK 4
-    # Make excel and csv files
+    # Make a dataframe which will be returned
     table = pd.DataFrame(columns = ['a', 'b', 'export', 'flag'])
     curr_list = [areas_nodes[reporterCode]]
     index = 1
     level = 1
     
     while level <= levels_n:
+        next_list = []
         for country in curr_list:
             if country.color != 'red' and country.name in listfl:
                 country.color = 'red'
-            else:
-                country.color = 'white'
             if country.imp_partners:
                 for partner in country.imp_partners:
                     partner.color = country.color
@@ -138,7 +136,8 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
                                           'export':exp,
                                           'flag': flag})
                     index += 1
-        curr_list = country.imp_partners
+                next_list.extend(country.imp_partners)
+        curr_list = next_list
         level += 1
     table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
     ####
