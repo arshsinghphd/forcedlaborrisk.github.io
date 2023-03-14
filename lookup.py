@@ -33,7 +33,8 @@ def makePyvisGraph(node, pyvis_net, ncolor = 'white'):
                 makePyvisGraph(partner, pyvis_net)
             else:
                 makePyvisGraph(partner, pyvis_net, ncolor)
-        pyvis_net.get_node(node.name)['title'] += '\n {:.2f}% of its exports go to following'.format(sum_trade)
+        pyvis_net.get_node(node.name)['title'] += \
+                '\n {:.2f}% of its exports go to following'.format(sum_trade)
     
     return 
     
@@ -104,42 +105,45 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
         level += 1
     ####
     
-    # #BLOCK 3
-    # # Make nx graph rooted at the user provided country node
-    # nx_graph = nx.Graph()
-    # makeNxGraph(areas_nodes[reporterCode], nx_graph)
-    # ####
-    
-    #BLOCK 4
+    #BLOCK 3
     # Make a pyvis graph from nx graph
     # save it as an html component
     pyvis_net = Network(height="700px", width="100%", 
                         bgcolor="#222222", font_color="white", 
-                        directed =True)
+                        directed=True)
     makePyvisGraph(areas_nodes[reporterCode], pyvis_net)
     pyvis_net.write_html("images/result.html", local=True)
     ####
     
-    #BLOCK 5
+    #BLOCK 4
     # Make excel and csv files
-    table = pd.DataFrame(columns = ['a','b','export'])
+    table = pd.DataFrame(columns = ['a', 'b', 'export', 'flag'])
     curr_list = [areas_nodes[reporterCode]]
     index = 1
     level = 1
+    
     while level <= levels_n:
         for country in curr_list:
-            next_list = country.imp_partners
-            for partner in next_list:
-                exp = str(round(partner.trade_value, 2))[:4]
-                table.loc[index] = pd.Series({'a':country.name, 'b':partner.name, 'export':exp})
-                index += 1
-        curr_list = next_list
+            if country.color != 'red' and country.name in listfl:
+                country.color = 'red'
+            else:
+                country.color = 'white'
+            if country.imp_partners:
+                for partner in country.imp_partners:
+                    partner.color = country.color
+                    flag = partner.color == 'red'
+                    exp = str(round(partner.trade_value, 2))[:4]
+                    table.loc[index] = pd.Series({'a':country.name, 
+                                          'b':partner.name, 
+                                          'export':exp,
+                                          'flag': flag})
+                    index += 1
+        curr_list = country.imp_partners
         level += 1
     table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
-    table.to_csv("images/table.xls", sep = '\t' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
-    table.to_csv("images/table.csv", sep = ',' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
     ####
-    return
+    return table
+    
     
 if __name__ == '__main__':
     deep_search(reporterCode,year,comm_codes,imp_n,levels_n)
