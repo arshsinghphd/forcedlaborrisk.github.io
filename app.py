@@ -70,18 +70,36 @@ st.write("Red colored nodes: U. S. State dept. reports that {} grown and process
 comm_code = 52
 
 # -- call the code --
-lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
+table = lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
 
 # -- code has made an html file images/result.html --
+
 HtmlFile = open("images/result.html", 'r', encoding='utf-8')
 source_code = HtmlFile.read()
 components.html(source_code, height=710, scrolling=True)
 dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))    
+
+@st.cache_data
+def table_to_csv(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv(sep = ',' , 
+             header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+             ).encode('utf-8')
+
+@st.cache_data
+def table_to_xls(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv(sep = '\t' , 
+             header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+             ).encode('utf-8')
+
+csv = table_to_csv(table)
+xls = table_to_xls(table)
     
 if dataDown == 'Excel':
-    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
+    st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
 if dataDown == 'CSV':
-    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
+    st.download_button("Download CSV", csv, file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
 
 # reset the image/result.html to default numbers    
 lookup.deep_search(reporterCode, year, comm_code, imp_n, 1)
