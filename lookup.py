@@ -60,7 +60,8 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
                 areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     ####
     
-    #BLOCK 2: Trade calculations
+    #BLOCK 2: 
+    # TRADE CALCULATIONS AND BULDING DATAFRAME
     # For level 1 iteration,
     # Start with the user provided country as the only node in 'curr_list'.
     # Make a list 'trade', of all nodes in areas_nodes it exports to.
@@ -70,17 +71,20 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     # Save these nodes as the 'next_list'.
     # 'next_list' becomes 'curr_list' for the next level iteration.
     # Iterate levels_n times.
+    table = pd.DataFrame(columns = ['a', 'b', 'export', 'flag'])
     curr_list = [areas_nodes[reporterCode]]
     level = 1
-    
+    index = 1
     while level <= levels_n:
         next_list = []
         for country in curr_list:
+            if country.color != 'red' and country.name in listfl:
+                country.color = 'red'
             i = country.code
             trade = []
             tot_trade = 0
             for j in areas_nodes.values():
-                if j.color == 'white':
+                if not j.engaged:
                     tv = tradeMat.loc[i, str(j.code)]
                     j.trade_value = tv
                     trade.append(j)
@@ -92,17 +96,27 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
             counter = 0
             for partner in trade:
                 counter += 1
-                if partner.color == 'white':
+                if not partner.engaged:
                     sum_trade += partner.trade_value
                     partner.trade_value = 100*partner.trade_value/tot_trade
                     country.imp_partners.append(partner)
                     partner.parent = country.name
-                    partner.color = 'green'
+                    partner.color = country.color
+                    partner.engaged = True
                     partner.depth = level
+                    
+                    flag = partner.color == 'red'
+                    exp = str(round(partner.trade_value, 2))[:4]
+                    table.loc[index] = pd.Series({'a':country.name, 
+                                          'b':partner.name, 
+                                          'export':exp,
+                                          'flag': flag})
+                    index += 1
             country.trade_with_partners = sum_trade*100/tot_trade
             next_list.extend(country.imp_partners)
         curr_list = next_list
         level += 1
+    table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
     ####
     
     #BLOCK 3
@@ -114,33 +128,6 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     pyvis_net.write_html("images/result.html", local=True)
     ####
     
-    #BLOCK 4
-    # Make a dataframe which will be returned
-    table = pd.DataFrame(columns = ['a', 'b', 'export', 'flag'])
-    curr_list = [areas_nodes[reporterCode]]
-    index = 1
-    level = 1
-    
-    while level <= levels_n:
-        next_list = []
-        for country in curr_list:
-            if country.color != 'red' and country.name in listfl:
-                country.color = 'red'
-            if country.imp_partners:
-                for partner in country.imp_partners:
-                    partner.color = country.color
-                    flag = partner.color == 'red'
-                    exp = str(round(partner.trade_value, 2))[:4]
-                    table.loc[index] = pd.Series({'a':country.name, 
-                                          'b':partner.name, 
-                                          'export':exp,
-                                          'flag': flag})
-                    index += 1
-                next_list.extend(country.imp_partners)
-        curr_list = next_list
-        level += 1
-    table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
-    ####
     return table
     
     
