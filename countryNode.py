@@ -1,8 +1,9 @@
 class node:
-    def __init__(self, code, name, depth = -1, color = 'white', parent_code = 0):
+    def __init__(self, code, name, depth = -1, color = 'white', parent_code = 0, engaged = False):
         self.code = code
         self.name = name
         self.depth = depth
+        self.engaged = engaged
         self.color = color
         self.parent = parent_code
         self.trade_value = 0
