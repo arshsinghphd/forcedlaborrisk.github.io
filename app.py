@@ -35,16 +35,12 @@ with st.form("entry_form", clear_on_submit=False):
     reporterName = st.selectbox(f"Select Country",areas)
     reporterCode = int(re.split('-',reporterName)[0])
     reporterName = re.split('-',reporterName)[1]
-    
     col1, col2 = st.columns(2)
     trade = col1.selectbox("Trade", trade)
-    
+    year = col1.selectbox("Year", years)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     comm_code = int(re.split('-',comm_code_raw)[0])
     comm_name = re.split('-',comm_code_raw)[1]
-    
-    year = col1.selectbox("Year", years)
-    
     "---"
     imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
             min_value=1,max_value=15,format="%i",step=1)
@@ -60,24 +56,19 @@ if submitted:
     imp_n = int(imp_n)
     levels_n = int(levels_n)
     st.write("You selected the following values.")
-    st.write()
     st.write("County: {}".format(reporterName))
-    st.write("Trade Type: {}".format(trade))
-    st.write("Commodity: {}".format(comm_name))
     st.write("Year: {}".format(year))
-    st.write("The max number of trade partners of each country: {}".format(imp_n))
+    st.write("The max number of trade partners of each node country: {}".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
-    
     "---"
-
+    
 st.header("Partnering Countries")
+st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the map.")
+st.write("Red colored nodes: U. S. State dept. reports that {} grown and processed in that country to have high risk of involving forced or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
+
 # for now overwriting commodity code as integer 52
 comm_code = 52
-    
-st.write("You can zoom in and out of the frame below to see details if illegible.")
-st.write("You can see trade share by hovering over the dots/nodes.")
-st.write("You can also hold the nodes and move them around to rearrange the map.")
-st.write("You also have the option to download the data in a table (see bottom of the page).")
+
 # -- call the code --
 lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
 
@@ -88,9 +79,9 @@ components.html(source_code, height=710, scrolling=True)
 dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))    
     
 if dataDown == 'Excel':
-    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download Table.xls")
+    st.download_button("Download Excel", 'images/table.xls', file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
 if dataDown == 'CSV':
-    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download Table.csv")
+    st.download_button('Download CSV', 'images/table.csv', file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
 
 # reset the image/result.html to default numbers    
-lookup.deep_search(4, 2021, 52, 1, 1)
+lookup.deep_search(reporterCode, year, comm_code, imp_n, 1)
