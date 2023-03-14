@@ -125,6 +125,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     table = pd.DataFrame(columns = ['a','b','export'])
     curr_list = [areas_nodes[reporterCode]]
     index = 1
+    level = 1
     while level <= levels_n:
         for country in curr_list:
             next_list = country.imp_partners
@@ -138,9 +139,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     table.to_csv("images/table.xls", sep = '\t' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
     table.to_csv("images/table.csv", sep = ',' , header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*'])
     ####
-    
     return
-    
     
 if __name__ == '__main__':
     deep_search(reporterCode,year,comm_codes,imp_n,levels_n)
