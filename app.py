@@ -97,9 +97,9 @@ csv = table_to_csv(table)
 xls = table_to_xls(table)
     
 if dataDown == 'Excel':
-    st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, will reset results")
+    st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, may move the graph nodes around")
 if dataDown == 'CSV':
-    st.download_button("Download CSV", csv, file_name='Table.csv', mime = 'csv', help = "Download file, will reset results")
+    st.download_button("Download CSV", csv, file_name='Table.csv', mime = 'csv', help = "Download file, may move the graph nodes around")
 
 # reset the image/result.html to default numbers    
 lookup.deep_search(reporterCode, year, comm_code, imp_n, 1)
