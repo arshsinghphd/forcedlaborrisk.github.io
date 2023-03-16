@@ -1,5 +1,5 @@
 import lookup
-
+import math
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
@@ -45,7 +45,7 @@ with st.form("entry_form", clear_on_submit=False):
     imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
             min_value=1,max_value=15,format="%i",step=1)
     levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", \
-    min_value=1,max_value= len(areas)//imp_n,format="%i",step=1)
+    min_value=1,max_value= math.log(len(areas),imp_n),format="%i",step=1)
     "---"
     dataDown = ''
     submitted = st.form_submit_button()
