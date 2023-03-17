@@ -79,7 +79,7 @@ def table_to_csv(df):
 @st.cache_data
 def table_to_xls(df):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
-return df.to_csv(sep = '\t' , 
+    return df.to_csv(sep = '\t' , 
          header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
          ).encode('utf-8')
 
