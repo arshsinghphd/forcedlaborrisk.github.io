@@ -61,10 +61,6 @@ if submitted:
     st.write("The max number of trade partners of each node country: {}".format(imp_n))
     st.write("Search {} level(s) deep".format(levels_n))
     "---"
-    
-st.header("Partnering Countries")
-st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the map.")
-st.write("Red colored nodes: U. S. State dept. reports that {} grown and processed in that country to have high risk of involving forced or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
 
 # for now overwriting commodity code as integer 52
 comm_code = 52
@@ -89,7 +85,9 @@ if imp_n**levels_n + 1 > len(areas):
 else:
     table = lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
     # -- code has made an html file images/result.html --
-
+    st.header("Partnering Countries")
+    st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the map.")
+    st.write("Red colored nodes: U. S. State dept. reports that {} grown and processed in that country to have high risk of involving forced or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height=710, scrolling=True)
