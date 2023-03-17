@@ -49,9 +49,8 @@ with st.form("entry_form", clear_on_submit=False):
     dataDown = ''
     if imp_n**levels_n + 1 > len(areas):
         st.write("Refine your search criteria to include lesser countries")
-    else:
-        "---"
-        submitted = st.form_submit_button()
+    "---"
+    submitted = st.form_submit_button()
 # --- Output Area ---
 if submitted:
     # fix commodity code with regex later
