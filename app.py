@@ -70,18 +70,18 @@ st.write("Red colored nodes: U. S. State dept. reports that {} grown and process
 comm_code = 52
 
 @st.cache_data
-    def table_to_csv(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-        return df.to_csv(sep = ',' , 
-             header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
-             ).encode('utf-8')
+def table_to_csv(df):
+# IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv(sep = ',' , 
+         header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+         ).encode('utf-8')
 
-    @st.cache_data
-    def table_to_xls(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv(sep = '\t' , 
-             header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
-             ).encode('utf-8')
+@st.cache_data
+def table_to_xls(df):
+# IMPORTANT: Cache the conversion to prevent computation on every rerun
+return df.to_csv(sep = '\t' , 
+         header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+         ).encode('utf-8')
 
 # -- call the code --
 if imp_n**levels_n + 1 > len(areas):
