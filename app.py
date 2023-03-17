@@ -43,13 +43,15 @@ with st.form("entry_form", clear_on_submit=False):
     comm_name = re.split('-',comm_code_raw)[1]
     "---"
     imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
-            min_value=1,max_value=15,format="%i",step=1)
+            min_value=1,max_value=10,format="%i",step=1)
     levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", \
-    min_value=1,max_value= int(math.log(len(areas),imp_n)),format="%i",step=1)
-    "---"
+    min_value=1, max_value= 5,format="%i",step=1)
     dataDown = ''
-    submitted = st.form_submit_button()
-
+    if imp_n**levels_n + 1 > len(areas):
+        st.write("Refine your search criteria to include lesser countries")
+    else:
+        "---"
+        submitted = st.form_submit_button()
 # --- Output Area ---
 if submitted:
     # fix commodity code with regex later
