@@ -81,7 +81,7 @@ def table_to_xls(df):
 
 # -- call the code --
 if imp_n**(levels_n + 1) > len(areas):
-        st.write("Refine your search criteria to include lesser countries")
+        st.write("Your current selection results in too many countires. Please refine your search criteria by reducing partners or levels.")
 else:
     table = lookup.deep_search(reporterCode, year, comm_code, imp_n, levels_n)
     # -- code has made an html file images/result.html --
