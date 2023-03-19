@@ -47,15 +47,15 @@ if 'levels_n' not in st.session_state:
 with st.form("entry_form", clear_on_submit=False):
     st.write("In all of the selection boxes, you can choose from the options. You can also delete the default and start typing your choice and options will be suggested.")
     reporterName_raw = st.selectbox(f"Select Country",areas)
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     trade = col1.selectbox("Trade", trade)
-    year = col1.selectbox("Year", years)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
-    
+    year = col3.selectbox("Year", years)
     "---"
-    imp_n = st.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
+    col1, col2 = st.columns(2)
+    imp_n = col1.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
                             min_value=1,max_value=10,format="%i",step=1)
-    levels_n = st.number_input("Depth: \n After your defined country, how many levels down do you want to search?", \
+    levels_n = col2.number_input("Depth: \n After your defined country, how many levels down do you want to search?", \
                             min_value=1, max_value=10,format="%i",step=1)
     dataDown = ''
     "---"
