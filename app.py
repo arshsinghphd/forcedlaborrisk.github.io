@@ -100,11 +100,11 @@ st.write("Red colored nodes: U. S. State Dept. reports that {} grown and process
 
 "---"
 
-st.markdown("#### Partnering Countries")
+st.markdown('<div style="text-align: center;">#### Partnering Countries</div>')
 # -- Adjust depth and partners --
 col1, col2= st.columns(2)
-col1.write('Adjust Levels')
-col2.write('Adjust Partners')
+col1.write('<div style="text-align: center;">Adjust Levels</div>')
+col2.write('<div style="text-align: center;">Adjust Partners</div>')
 col1, col2, col3, col4 = st.columns(4)
 # ---- Depth ----
 inc_level = col1.button('+1 Level')
