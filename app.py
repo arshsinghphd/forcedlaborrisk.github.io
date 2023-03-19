@@ -87,8 +87,6 @@ reporterName = re.split('-', st.session_state.reporterName_raw)[1]
 st.markdown("#### Current Values")
 st.write("County: {}".format(reporterName))
 st.write("Year: {}".format(year))
-st.write("The number of trade partners of each node country: {}.".format(imp_n))
-st.write("Search {} level(s) deep".format(levels_n))
 st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the map.")
 comm_name = re.split('-',st.session_state.comm_code_raw)[1]
 st.write("Red colored nodes: U. S. State Dept. reports that {} grown and processed in that country to have high risk of involving forced and/or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
