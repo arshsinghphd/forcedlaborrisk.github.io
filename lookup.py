@@ -121,7 +121,7 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     
     #BLOCK 3
     # Make a pyvis graph and save it as an html
-    pyvis_net = Network(height="700px", width="100%", 
+    pyvis_net = Network(height="400px", width="100%", 
                         bgcolor="#222222", font_color="white", 
                         directed=True)
     makePyvisGraph(areas_nodes[reporterCode], pyvis_net)
