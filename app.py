@@ -138,7 +138,7 @@ comm_code = int(re.split('-', st.session_state.comm_code_raw)[0])
 levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
 
-if imp_n**(levels_n) > len(areas):
+if min(imp_n**(levels_n + 1), (imp_n + 1)**(levels_n)) > len(areas):
     "---"
     st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
 else:
