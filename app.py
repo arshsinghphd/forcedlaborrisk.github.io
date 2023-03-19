@@ -6,7 +6,7 @@ import pandas as pd
 from PIL import Image
 import re
 
-page_title = "Visualizing Risk Using Open Trade Data"
+page_title = "Open Trade Data Pilot"
 layout = "centered"
 icon = 'images/STREAMS-logo-v2_White_800.png'
 
