@@ -129,8 +129,7 @@ if dec_p:
 imp_n = st.session_state.imp_n
 col1, col2= st.columns(2)
 col1.write("Search {} level(s) deep".format(levels_n))
-col2.write("The number of trade partners of each node country: {}.".format(imp_n))
-
+col2.write("No. Imp. trade partners: {}.".format(imp_n))
 
 # -- lookup --
 #st.write(st.session_state)
