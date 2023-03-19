@@ -107,11 +107,11 @@ col1.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allo
 col2.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
 col1, col2, col3, col4 = st.columns(4)
 # ---- Depth ----
-inc_level = col1.button('+1 Level')
+inc_level = col1.button('<div style="text-align: center;">+1 Level</div>',unsafe_allow_html=True)
 if inc_level:
     if st.session_state.levels_n < 10:
         st.session_state.levels_n += 1
-dec_level = col2.button('-1 Level')
+dec_level = col2.button('<div style="text-align: center;">-1 Level</div>',unsafe_allow_html=True)
 if dec_level:
     if st.session_state.levels_n > 1:
         st.session_state.levels_n -= 1
