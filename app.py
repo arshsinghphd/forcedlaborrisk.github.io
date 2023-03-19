@@ -53,10 +53,12 @@ with st.form("entry_form", clear_on_submit=False):
     trade = col3.selectbox("Trade", trade)
     "---"
     year = col1.selectbox("Year", years)
-    imp_n = col2.number_input(f"Enter the number max number of trade partners.\nPartners with the largest trade values are chosen first.", \
+    imp_n = col2.number_input(f"No. trade partners*", \
                             min_value=1,max_value=10,format="%i",step=1)
-    levels_n = col3.number_input("Depth: \n After your defined country, how many levels down do you want to search?", \
+    levels_n = col3.number_input("Depth^", \
                             min_value=1, max_value=10,format="%i",step=1)
+    st.write("* Partners with the largest trade values are chosen first.")
+    st.write("^ After your defined country, how many levels down do you want to search?")
     dataDown = ''
     "---"
     submitted = st.form_submit_button()
