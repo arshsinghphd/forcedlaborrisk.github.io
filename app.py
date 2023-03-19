@@ -53,7 +53,6 @@ with st.form("entry_form", clear_on_submit=False):
     reporterName_raw = col1.selectbox(f"Select Country",areas)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     trade = col3.selectbox("Trade", trade)
-    "---"
     year = col1.selectbox("Year", years)
     imp_n = col2.number_input("No. Trade Partners", \
                             min_value=1,max_value=10,format="%i",step=1)
