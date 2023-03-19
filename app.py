@@ -100,7 +100,7 @@ st.write("Red colored nodes: U. S. State Dept. reports that {} grown and process
 
 "---"
 
-st.header("Partnering Countries")
+st.markdown("#### Partnering Countries")
 # -- Adjust depth and partners --
 col1, col2= st.columns(2)
 col1.write('Adjust Levels')
