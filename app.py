@@ -53,7 +53,7 @@ with st.form("entry_form", clear_on_submit=False):
     trade = col3.selectbox("Trade", trade)
     "---"
     year = col1.selectbox("Year", years)
-    imp_n = col2.number_input("No. Trade Partners :red(1)", \
+    imp_n = col2.number_input("No. Trade Partners :superscript(1)", \
                             min_value=1,max_value=10,format="%i",step=1)
     levels_n = col3.number_input("Depth :red(2)", \
                             min_value=1, max_value=10,format="%i",step=1)
@@ -148,6 +148,7 @@ else:
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True)
     # -- table download area --
+    
     dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))        
     csv = table_to_csv(table)
     xls = table_to_xls(table)
