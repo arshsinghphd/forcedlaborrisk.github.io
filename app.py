@@ -100,7 +100,7 @@ st.write("Red colored nodes: U. S. State Dept. reports that {} grown and process
 
 "---"
 
-st.markdown('<div style="text-align: center;">Partnering Countries</div>',unsafe_allow_html=True)
+st.markdown('#### <div style="text-align: center;">Partnering Countries</div>',unsafe_allow_html=True)
 # -- Adjust depth and partners --
 col1, col2= st.beta_columns([1, 1])
 col1.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allow_html=True)
