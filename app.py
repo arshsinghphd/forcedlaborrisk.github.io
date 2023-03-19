@@ -39,9 +39,9 @@ if 'year' not in st.session_state:
 if 'comm_code_raw' not in st.session_state:
     st.session_state.comm_code_raw = '52 - Cotton'
 if 'imp_n' not in st.session_state:
-    st.session_state.imp_n = imp_n
+    st.session_state.imp_n = 1
 if 'levels_n' not in st.session_state:
-    st.session_state.levels_n = levels_n 
+    st.session_state.levels_n = 1
 
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
