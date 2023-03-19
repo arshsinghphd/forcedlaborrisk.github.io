@@ -138,7 +138,7 @@ levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
 
 if imp_n**(levels_n + 1) > len(areas):
-    st.markdown(" #### Your current selection results in too many countires.\n #### Please refine your search criteria by adjusting partners or levels.")
+    st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
 else:
     # -- call lookup.py --         
     table = lookup.deep_search(reporterCode, year, 
