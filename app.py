@@ -14,7 +14,7 @@ st.set_page_config(page_title = page_title, layout=layout, page_icon = icon)
 
 # -- Logo and Title--
 logo = Image.open('images/Verite-Wordmark-Web-Small-2.jpg')
-col1, col2 = st.beta_columns[1, 4]
+col1, col2 = st.columns([1, 4])
 col1.image(logo)
 col2.title(page_title)
 # -- Drop Down Menus --
@@ -101,10 +101,10 @@ st.write("Red colored nodes: U. S. State Dept. reports that {} grown and process
 
 st.markdown('#### <div style="text-align: center;">Partnering Countries</div>',unsafe_allow_html=True)
 # -- Adjust depth and partners --
-col1, col2= st.beta_columns([1, 1])
+col1, col2= st.columns(2)
 col1.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allow_html=True)
 col2.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
-col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.beta_columns(12)
+col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
 # ---- Depth ----
 inc_level = col2.button('↑')
 if inc_level:
