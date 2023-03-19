@@ -138,6 +138,7 @@ levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
 
 if imp_n**(levels_n + 1) > len(areas):
+    "---"
     st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
 else:
     # -- call lookup.py --         
@@ -148,7 +149,7 @@ else:
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True)
     # -- table download area --
-    
+    "---"
     dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))        
     csv = table_to_csv(table)
     xls = table_to_xls(table)
