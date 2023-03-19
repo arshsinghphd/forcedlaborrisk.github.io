@@ -107,22 +107,22 @@ col1.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allo
 col2.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
 col1, col2, col3, col4 = st.beta_columns([1, 1, 1, 1])
 # ---- Depth ----
-inc_level = col1.button('+1 Level')
+inc_level = col1.center_button('+1 Level')
 if inc_level:
     if st.session_state.levels_n < 10:
         st.session_state.levels_n += 1
-dec_level = col2.button('-1 Level')
+dec_level = col2.center_button('-1 Level')
 if dec_level:
     if st.session_state.levels_n > 1:
         st.session_state.levels_n -= 1
 levels_n = st.session_state.levels_n
 
 # ---- Partners ----
-inc_part = col3.button('+1 Partner')
+inc_part = col3.center_button('+1 Partner')
 if inc_part:
     if st.session_state.imp_n < 10:
         st.session_state.imp_n += 1
-dec_p = col4.button('-1 Partner')
+dec_p = col4.center_button('-1 Partner')
 if dec_p:
     if st.session_state.imp_n > 1:
         st.session_state.imp_n -= 1
