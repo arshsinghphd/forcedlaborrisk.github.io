@@ -48,16 +48,15 @@ with st.form("entry_form", clear_on_submit=False):
     st.write("For *No. Trade Partners*, the largest trade values are chosen first.")
     st.write("For *Depth of the Search*, After your defined country, how many levels down do you want to search?")
     
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
     reporterName_raw = col1.selectbox(f"Select Country",areas)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     trade = col3.selectbox("Trade", trade)
-    year = col1.selectbox("Year", years)
-    imp_n = col2.number_input("No. Trade Partners", \
-                            min_value=1,max_value=10,format="%i",step=1)
-    levels_n = col3.number_input("Depth of the Search", \
-                            min_value=1, max_value=10,format="%i",step=1)
-    
+    year = col4.selectbox("Year", years)
+    # imp_n = col2.number_input("No. Trade Partners", \
+                            # min_value=1,max_value=10,format="%i",step=1)
+    # levels_n = col3.number_input("Depth of the Search", \
+                            # min_value=1, max_value=10,format="%i",step=1)
     dataDown = ''
     "---"
     submitted = st.form_submit_button()
@@ -67,9 +66,6 @@ if submitted:
     st.session_state.reporterName_raw = reporterName_raw    
     st.session_state.year = int(year)
     st.session_state.comm_code_raw = comm_code_raw
-    st.session_state.imp_n = imp_n
-    st.session_state.levels_n = levels_n
-
 
 # -- define functions before they are called --
 @st.cache_data
