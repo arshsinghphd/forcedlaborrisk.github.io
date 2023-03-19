@@ -45,7 +45,8 @@ if 'levels_n' not in st.session_state:
 
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
-    st.write("In all of the selection boxes, you can choose from the options. You can also delete the default and start typing your choice and options will be suggested.")
+    st.write("In all of the selection boxes, you can choose from the options. \n You can also delete the default and start typing your choice and options will be suggested. \n For the No. of partners, the largest trade values are chosen first.")
+    st.write(":red(2) After your defined country, how many levels down do you want to search?")
     
     col1, col2, col3 = st.columns(3)
     reporterName_raw = col1.selectbox(f"Select Country",areas)
@@ -53,12 +54,11 @@ with st.form("entry_form", clear_on_submit=False):
     trade = col3.selectbox("Trade", trade)
     "---"
     year = col1.selectbox("Year", years)
-    imp_n = col2.number_input("No. Trade Partners :superscript(1)", \
+    imp_n = col2.number_input("No. Trade Partners", \
                             min_value=1,max_value=10,format="%i",step=1)
-    levels_n = col3.number_input("Depth :red(2)", \
+    levels_n = col3.number_input("Depth of the Search", \
                             min_value=1, max_value=10,format="%i",step=1)
-    st.write(":red(1) Partners with the largest trade values are chosen first.")
-    st.write(":red(2) After your defined country, how many levels down do you want to search?")
+    
     dataDown = ''
     "---"
     submitted = st.form_submit_button()
