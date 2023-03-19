@@ -46,8 +46,8 @@ if 'levels_n' not in st.session_state:
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
     st.write("In all of the selection boxes, you can choose from the options or you can also delete the default and start typing your choice and options will be suggested.")
-    st.write("For _No. of Partners_, the largest trade values are chosen first.")
-    st.write("For _Depth of the Search_, After your defined country, how many levels down do you want to search?")
+    st.write("For *No. Trade Partners*, the largest trade values are chosen first.")
+    st.write("For *Depth of the Search*, After your defined country, how many levels down do you want to search?")
     
     col1, col2, col3 = st.columns(3)
     reporterName_raw = col1.selectbox(f"Select Country",areas)
