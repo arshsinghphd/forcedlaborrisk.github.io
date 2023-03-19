@@ -1,4 +1,5 @@
 import countryNode
+
 import pandas as pd
 from pyvis.network import Network
 import requests 
@@ -78,6 +79,8 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     while level <= levels_n:
         next_list = []
         for country in curr_list:
+            if country.code == reporterCode:
+                country.engaged = True
             if country.color != 'red' and country.name in listfl:
                 country.color = 'red'
             i = country.code
@@ -121,6 +124,10 @@ def deep_search(reporterCode, year, comm_codes, imp_n, levels_n):
     
     #BLOCK 3
     # Make a pyvis graph and save it as an html
+    
+    #pyvis_net = Network(height="700px", width="100%", 
+    #                    bgcolor="#222222", font_color="white", 
+    #                    directed=True)
     pyvis_net = Network(height="400px", width="100%", 
                         bgcolor="#222222", font_color="white", 
                         directed=True)
