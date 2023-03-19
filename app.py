@@ -118,11 +118,11 @@ if dec_level:
 levels_n = st.session_state.levels_n
 
 # ---- Partners ----
-inc_part = col8.button('+')
+inc_part = col8.button('++')
 if inc_part:
     if st.session_state.imp_n < 10:
         st.session_state.imp_n += 1
-dec_p = col11.button('-')
+dec_p = col11.button('--')
 if dec_p:
     if st.session_state.imp_n > 1:
         st.session_state.imp_n -= 1
