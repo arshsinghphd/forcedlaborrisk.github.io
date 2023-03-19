@@ -116,7 +116,7 @@ if dec_level:
     if st.session_state.levels_n > 1:
         st.session_state.levels_n -= 1
 levels_n = st.session_state.levels_n
-st.write("Search {} level(s) deep".format(levels_n))
+
 # ---- Partners ----
 inc_part = col3.button('+1 Partner')
 if inc_part:
@@ -127,7 +127,9 @@ if dec_p:
     if st.session_state.imp_n > 1:
         st.session_state.imp_n -= 1
 imp_n = st.session_state.imp_n
-st.write("The number of trade partners of each node country: {}.".format(imp_n))
+col1, col2= st.columns(2)
+col1.write("Search {} level(s) deep".format(levels_n))
+col2.write("The number of trade partners of each node country: {}.".format(imp_n))
 
 
 # -- lookup --
