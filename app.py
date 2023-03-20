@@ -9,7 +9,6 @@ import re
 page_title = "Open Trade Data Pilot"
 layout = "centered"
 icon = 'images/STREAMS-logo-v2_White_800.png'
-
 st.set_page_config(page_title = page_title, layout=layout, page_icon = icon)
 
 # -- Logo and Title--
@@ -17,8 +16,8 @@ logo = Image.open('images/Verite-Wordmark-Web-Small-2.jpg')
 col1, col2 = st.columns([1, 4])
 col1.image(logo)
 col2.title(page_title)
-# -- Drop Down Menus --
 
+# -- Drop Down Menus --
 years = ["2021", "2020", "2019"]
 commodity = ["52 - Cotton"]
 trade = ['Export', 'Import', 'Both']
@@ -37,6 +36,8 @@ if 'year' not in st.session_state:
     st.session_state.year = 2021
 if 'comm_code_raw' not in st.session_state:
     st.session_state.comm_code_raw = '52 - Cotton'
+if 'flow' not in st.session_state:
+    st.session_state.flow = "E"
 if 'imp_n' not in st.session_state:
     st.session_state.imp_n = 1
 if 'levels_n' not in st.session_state:
@@ -45,18 +46,12 @@ if 'levels_n' not in st.session_state:
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
     st.write("In all of the selection boxes, you can choose from the options or you can also delete the default and start typing your choice and options will be suggested.")
-    
     col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
     reporterName_raw = col1.selectbox(f"Select Country",areas)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
-    trade = col3.selectbox("Trade", trade)
+    flow = col3.selectbox("Trade", trade)
     year = col4.selectbox("Year", years)
-    # imp_n = col2.number_input("No. Trade Partners", \
-                            # min_value=1,max_value=10,format="%i",step=1)
-    # levels_n = col3.number_input("Depth of the Search", \
-                            # min_value=1, max_value=10,format="%i",step=1)
     dataDown = ''
-    "---"
     submitted = st.form_submit_button()
 
 # -- Based on Submission, update sesion_state variables --
@@ -64,6 +59,12 @@ if submitted:
     st.session_state.reporterName_raw = reporterName_raw    
     st.session_state.year = int(year)
     st.session_state.comm_code_raw = comm_code_raw
+    if flow == "Export":
+        st.session_state.flow = "X"
+    elif flow == "Import":
+        st.session_state.flow = "M"
+    else:
+        st.session_state.flow = "B"
 
 # -- define functions before they are called --
 @st.cache_data
@@ -72,7 +73,6 @@ def table_to_csv(df):
     return df.to_csv(sep = ',' , 
          header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
          ).encode('utf-8')
-
 @st.cache_data
 def table_to_xls(df):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
@@ -82,21 +82,29 @@ def table_to_xls(df):
 
 # -- Output Area --
 reporterName = re.split('-', st.session_state.reporterName_raw)[1]
-st.markdown("#### Current Values")
-st.write("County: {}".format(reporterName))
-st.write("Year: {}".format(year))
-st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the map.")
 comm_name = re.split('-',st.session_state.comm_code_raw)[1]
+st.markdown("#### Current Values")
+col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
+col1.write("{}".format(reporterName))
+col2.write("{}".format(comm_name))
+col3.write("{}".format(flow))
+col4.write("{}".format(year))
+st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the network graph.")
 st.write("Red colored nodes: U. S. State Dept. reports that {} grown and processed in that country to have high risk of involving forced and/or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
-
 "---"
+if flow == 'Export':
+    st.markdown('#### <div style="text-align: center;"> Path of {} Trade Emerging from {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
+elif flow == 'Import':
+    st.markdown('#### <div style="text-align: center;">Path of {} Trade Reaching {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
+else:
+    st.markdown('#### <div style="text-align: center;">Path of {} Trade Centered at {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
 
-st.markdown('#### <div style="text-align: center;">Partnering Countries</div>',unsafe_allow_html=True)
 # -- Adjust depth and partners --
 col1, col2= st.columns(2)
-col1.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
-col2.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allow_html=True)
+col1.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
+col2.markdown('<div style="text-align: center;">Adjust Levels</div>', unsafe_allow_html=True)
 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
+
 # ---- Partners ----
 inc_part = col2.button('⊕')
 if inc_part:
@@ -107,6 +115,7 @@ if dec_p:
     if st.session_state.imp_n > 1:
         st.session_state.imp_n -= 1
 imp_n = st.session_state.imp_n
+
 # ---- Depth ----
 inc_level = col8.button('↑')
 if inc_level:
@@ -117,33 +126,33 @@ if dec_level:
     if st.session_state.levels_n > 1:
         st.session_state.levels_n -= 1
 levels_n = st.session_state.levels_n
-
 col1, col2= st.columns(2)
 col1.write("No. Imp. trade partners: {}.".format(imp_n))
 col2.write("Search {} level(s) deep".format(levels_n))
-
 
 # -- lookup --
 #st.write(st.session_state)
 reporterCode = int(re.split('-', st.session_state.reporterName_raw)[0])
 year = st.session_state.year
 comm_code = int(re.split('-', st.session_state.comm_code_raw)[0])
+flowCode = st.session_state.flow
 levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
-
 if min(imp_n**(levels_n + 1), (imp_n + 1)**(levels_n)) > len(areas):
     "---"
     st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
 else:
     # -- call lookup.py --         
     table = lookup.deep_search(reporterCode, year, 
-                                comm_code, imp_n, levels_n)
+                                comm_code, flowCode, imp_n, levels_n)
+
     # -- lookup.py has made an html file images/result.html --        
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True)
-    # -- table download area --
     "---"
+    
+    # -- table download area --
     dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))        
     csv = table_to_csv(table)
     xls = table_to_xls(table)
