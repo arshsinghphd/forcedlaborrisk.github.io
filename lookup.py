@@ -134,9 +134,8 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
                     partner.color = country.color
                     partner.engaged = True
                     partner.depth = level
-                    
-                    flag = partner.color == 'red'
                     if flowCode == "X":
+                        flag = partner.color == 'red'
                         exp = str(round(partner.trade_value, 2))[:4]
                         table.loc[index] = pd.Series({'a':country.name, 
                                               'b':partner.name, 
@@ -147,16 +146,17 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
                         table.loc[index] = pd.Series({'a':country.name, 
                                               'b':partner.name, 
                                               'import':imp,
-                                              'flag': flag})
+                                              'flag':False})
                     index += 1
             country.trade_with_partners = sum_trade*100/tot_trade
             next_list.extend(country.imp_partners)
         curr_list = next_list
         level += 1
     if flowCode == "X":
-        table.loc['*'] = pd.Series({'a':'As % of total exports of B'})
+        table.loc['*'] = pd.Series({'a':'As % of total exports of A'})
     elif flowCode == "M":
-        table.loc['*'] = pd.Series({'a':'As % of total imports of B'})
+        table.loc['*'] = pd.Series({'a':'As % of total imports of A'})
+    
     ####
     #BLOCK 3: MAKE GRAPH AND SAVE AS HTML
     ####
@@ -168,10 +168,12 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     if flowCode == 'M':
         for node in pyvis_net.get_nodes():
             if pyvis_net.get_node(node)['color'] == 'red':
+                table.loc[table['b'] == node, 'flag'] = True
                 node_code = areas_nameTocode[node]
                 parent = areas_nodes[node_code].parent
                 while parent != 0:
                     pyvis_net.get_node(parent)['color'] = 'red'
+                    table.loc[table['b'] == parent, 'flag'] = True
                     node = parent
                     node_code = areas_nameTocode[node]
                     parent = areas_nodes[node_code].parent
