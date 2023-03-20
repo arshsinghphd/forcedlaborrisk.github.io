@@ -68,17 +68,27 @@ if submitted:
 
 # -- define functions before they are called --
 @st.cache_data
-def table_to_csv(df):
+def table_to_csv(df, flowCode):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv(sep = ',' , 
-         header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
-         ).encode('utf-8')
+    if flowCode == 'X':
+        return df.to_csv(sep = ',' , 
+            header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+            ).encode('utf-8')
+    elif flowCode == 'M':
+        return df.to_csv(sep = ',' , 
+            header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
+            ).encode('utf-8')
 @st.cache_data
-def table_to_xls(df):
+def table_to_xls(df, flowCode):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv(sep = '\t' , 
-         header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
-         ).encode('utf-8')
+    if flowCode == "X":
+        return df.to_csv(sep = '\t' , 
+            header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+            ).encode('utf-8')
+    if flowCode == "M":
+        return df.to_csv(sep = '\t' , 
+            header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
+            ).encode('utf-8')
 
 # -- Output Area --
 reporterName = re.split('-', st.session_state.reporterName_raw)[1]
@@ -154,8 +164,8 @@ else:
     
     # -- table download area --
     dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))        
-    csv = table_to_csv(table)
-    xls = table_to_xls(table)
+    csv = table_to_csv(table, flowCode)
+    xls = table_to_xls(table, flowCode)
     if dataDown == 'Excel':
         st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, may move the graph nodes around")
     if dataDown == 'CSV':
