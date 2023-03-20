@@ -45,8 +45,6 @@ if 'levels_n' not in st.session_state:
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
     st.write("In all of the selection boxes, you can choose from the options or you can also delete the default and start typing your choice and options will be suggested.")
-    st.write("For *No. Trade Partners*, the largest trade values are chosen first.")
-    st.write("For *Depth of the Search*, After your defined country, how many levels down do you want to search?")
     
     col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
     reporterName_raw = col1.selectbox(f"Select Country",areas)
@@ -96,33 +94,34 @@ st.write("Red colored nodes: U. S. State Dept. reports that {} grown and process
 st.markdown('#### <div style="text-align: center;">Partnering Countries</div>',unsafe_allow_html=True)
 # -- Adjust depth and partners --
 col1, col2= st.columns(2)
-col1.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allow_html=True)
-col2.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
+col1.markdown('<div style="text-align: center;">Adjust Partners</div>',unsafe_allow_html=True)
+col2.markdown('<div style="text-align: center;">Adjust Levels</div>',unsafe_allow_html=True)
 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
+# ---- Partners ----
+inc_part = col2.button('⊕')
+if inc_part:
+    if st.session_state.imp_n < 10:
+        st.session_state.imp_n += 1
+dec_p = col5.button('⊖')
+if dec_p:
+    if st.session_state.imp_n > 1:
+        st.session_state.imp_n -= 1
+imp_n = st.session_state.imp_n
 # ---- Depth ----
-inc_level = col2.button('↑')
+inc_level = col8.button('↑')
 if inc_level:
     if st.session_state.levels_n < 10:
         st.session_state.levels_n += 1
-dec_level = col5.button('↓')
+dec_level = col11.button('↓')
 if dec_level:
     if st.session_state.levels_n > 1:
         st.session_state.levels_n -= 1
 levels_n = st.session_state.levels_n
 
-# ---- Partners ----
-inc_part = col8.button('⊕')
-if inc_part:
-    if st.session_state.imp_n < 10:
-        st.session_state.imp_n += 1
-dec_p = col11.button('⊖')
-if dec_p:
-    if st.session_state.imp_n > 1:
-        st.session_state.imp_n -= 1
-imp_n = st.session_state.imp_n
 col1, col2= st.columns(2)
-col1.write("Search {} level(s) deep".format(levels_n))
-col2.write("No. Imp. trade partners: {}.".format(imp_n))
+col1.write("No. Imp. trade partners: {}.".format(imp_n))
+col2.write("Search {} level(s) deep".format(levels_n))
+
 
 # -- lookup --
 #st.write(st.session_state)
