@@ -102,7 +102,9 @@ def table_to_xls(df, flowCode):
 def make_mat(year, comm_code, flowCode):
     try:
         tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
-        ids = list(tradeMat.index)
+        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
+        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
+        ids = list(df['ReporterCode'].unique())
     except:
         df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
         df = df[['ReporterCode','PartnerCode','PrimaryValue']]
