@@ -110,20 +110,23 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     # make a dict of names to codes
     areas_nameTocode = {}
     for i in areas.index:
-        areas_nameTocode[areas.loc[i]['text']] = i
+        if year < 2022 and i == 380:
+            areas_nameTocode[areas.loc[i + 1]['text']] = i
+        else:
+            areas_nameTocode[areas.loc[i]['text']] = i
     areas_nodes = {}
         
     for j in tradeMat.index:
         if j == reporterCode:
             if j not in areas_nodes.keys():
-                if j == 380: # italy code has changed
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j + 1]['text'], 0)
+                if j == 380: # italy code has changed from 2021 to 2022
+                    areas_nodes[j] = countryNode.node(j, areas.loc[j+1]['text'], 0)
                 else:
                     areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0)
         else:
             if j not in areas_nodes.keys():
                 if j == 380: # italy code has changed from 2021 to 2022
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j + 1]['text'], 0)
+                    areas_nodes[j] = countryNode.node(j, areas.loc[j+1]['text'], 0)
                 else:
                     areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     
