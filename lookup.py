@@ -111,7 +111,7 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     areas_nameTocode = {}
     for i in areas.index:
         if year < 2022 and i == 381:
-            i = i - 1
+            areas_nameTocode[areas.loc[i]['text']] = i - 1
         areas_nameTocode[areas.loc[i]['text']] = i 
     areas_nodes = {}
         
