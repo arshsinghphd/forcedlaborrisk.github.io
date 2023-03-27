@@ -95,7 +95,7 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     # tradeMat.head()
     
     tradeMat, ids = make_mat(year, comm_codes, flowCode)
-    
+    st.write(380 in ids)
     if reporterCode not in ids:
         return False, 0
     
