@@ -96,9 +96,6 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     
     tradeMat, ids = make_mat(year, comm_codes, flowCode)
     
-    if reporterCode == 381 and year < 2022:
-        reporterCode = 380
-    
     if reporterCode not in ids:
         return False, 0
     
@@ -114,25 +111,16 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     # make a dict of names to codes
     areas_nameTocode = {}
     for i in areas.index:
-        if i == 381 and year < 2022:
-            areas_nameTocode[areas.loc[i]['text']] = i - 1
-        else:
-            areas_nameTocode[areas.loc[i]['text']] = i 
+        areas_nameTocode[areas.loc[i]['text']] = i 
     areas_nodes = {}
         
     for j in tradeMat.index:
         if j == reporterCode:
             if j not in areas_nodes.keys():
-                if j == 380: # italy code has changed from 2021 to 2022
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j+1]['text'], 0)
-                else:
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0)
+                areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0)
         else:
             if j not in areas_nodes.keys():
-                if j == 380: # italy code has changed from 2021 to 2022
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j+1]['text'], 0)
-                else:
-                    areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
+                areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     
     
     ####
