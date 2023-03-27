@@ -62,7 +62,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, ncolor = 'white'):
 def make_mat(year, comm_codes, flowCode):
     df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_codes, year), encoding = 'cp437')
     df = df[['ReporterCode','PartnerCode','PrimaryValue']]
-    ids = list(df['ReporterCode'].unique())
+    ids = list(df['ReporterCode'] + df['PartnerCode']).unique()
     temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
     for i in range(len(ids)):
         for j in range(len(ids)):
@@ -95,7 +95,7 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     # tradeMat.head()
     
     tradeMat, ids = make_mat(year, comm_codes, flowCode)
-    st.write(380 in ids)
+
     if reporterCode not in ids:
         return False, 0
     
