@@ -62,7 +62,8 @@ def makePyvisGraph(node, pyvis_net, flowCode, ncolor = 'white'):
 def make_mat(year, comm_codes, flowCode):
     df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_codes, year), encoding = 'cp437')
     df = df[['ReporterCode','PartnerCode','PrimaryValue']]
-    ids = list(df['ReporterCode'] + df['PartnerCode']).unique()
+    ids_arr = df['ReporterCode'] + df['PartnerCode']
+    ids = list(ids_arr.unique())
     temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
     for i in range(len(ids)):
         for j in range(len(ids)):
