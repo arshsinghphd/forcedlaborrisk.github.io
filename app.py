@@ -46,9 +46,9 @@ if 'comm_code_raw' not in st.session_state:
 if 'flow' not in st.session_state:
     st.session_state.flow = "M"
 if 'imp_n' not in st.session_state:
-    st.session_state.imp_n = 10
+    st.session_state.imp_n = 2
 if 'levels_n' not in st.session_state:
-    st.session_state.levels_n = 10
+    st.session_state.levels_n = 2
 
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
