@@ -9,7 +9,6 @@ import streamlit as st
 import streamlit.components.v1 as components
 
 
-
 page_title = "Open Trade Data Pilot"
 layout = "centered"
 icon = 'images/STREAMS-logo-v2_White_800.png'
@@ -76,6 +75,38 @@ if submitted:
 
 # -- define functions before they are called --
 @st.cache_data
+def make_mat(year, comm_code, flowCode):
+    try:
+        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index_col = 0)   
+        ids = list(tradeMat.id)
+    except:
+        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
+        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
+        ids = list(df['ReporterCode'].unique())
+        temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
+        for i in range(len(ids)):
+            for j in range(len(ids)):
+                if i == j:
+                    temp[i][j] = 0
+                else:
+                    try:
+                        temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ids[j]]['PrimaryValue']/10**6
+                    except:
+                        temp[i][j] = 0
+        tradeMat = pd.DataFrame(temp)    
+        tradeMat.index.name = 'id'
+        colsToIds = {}
+        for i, j in zip(range(0, len(ids)), ids):
+            colsToIds[i] = j
+        tradeMat.rename(colsToIds, inplace = True)
+        tradeMat.rename(columns = colsToIds, inplace = True)
+        tradeMat = tradeMat.astype(int)
+        # a = list(df['ReporterCode'])
+        # b = list(df['PartnerCode'])
+        # all_ids = list(pd.DataFrame(a+b)[0].unique())
+        tradeMat.to_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
+    return tradeMat, ids
+@st.cache_data
 def table_to_csv(df, flowCode):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
     if flowCode == 'X':
@@ -98,40 +129,6 @@ def table_to_xls(df, flowCode):
             header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
             ).encode('utf-8')
 
-@st.cache_data
-def make_mat(year, comm_code, flowCode):
-    try:
-        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
-        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
-        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
-        ids = list(df['ReporterCode'].unique())
-    except:
-        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
-        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
-        ids = list(df['ReporterCode'].unique())
-        temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
-        for i in range(len(ids)):
-            for j in range(len(ids)):
-                if i == j:
-                    temp[i][j] = 0
-                else:
-                    try:
-                        temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ids[j]]['PrimaryValue']/10**6
-                    except:
-                        temp[i][j] = 0
-        tradeMat = pd.DataFrame(temp)
-        tradeMat.index.name = 'id'
-        colsToIds = {}
-        for i, j in zip(range(0, len(ids)), ids):
-            colsToIds[i] = j
-        tradeMat.rename(colsToIds, inplace = True)
-        tradeMat.rename(columns = colsToIds, inplace = True)
-        tradeMat = tradeMat.astype(int)
-        # a = list(df['ReporterCode'])
-        # b = list(df['PartnerCode'])
-        # all_ids = list(pd.DataFrame(a+b)[0].unique())
-        tradeMat.to_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
-    return tradeMat, ids
     
 # -- Output Area --
 reporterName = re.split('-', st.session_state.reporterName_raw)[1]
@@ -192,8 +189,8 @@ flowCode = st.session_state.flow
 levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
 tradeMat, ids = make_mat(year, comm_code, flowCode)
-st.session_state.tradeMat = tradeMat
-
+#st.session_state.tradeMat = tradeMat
+#st.write(tradeMat.head())
 if reporterCode in ids:
     # -- call lookup.py --         
     response = lookup.deep_search(reporterCode, flowCode, 
