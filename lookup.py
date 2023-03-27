@@ -117,7 +117,7 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
         if j == reporterCode:
             if j not in areas_nodes.keys():
                 if j == 380: # italy code has changed
-                    areas_nodes[j + 1] = countryNode.node(j + 1, areas.loc[j]['text'], 0)
+                    areas_nodes[j] = countryNode.node(j, areas.loc[j + 1]['text'], 0)
                 else:
                     areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'], 0)
         else:
