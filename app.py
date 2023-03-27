@@ -17,7 +17,7 @@ col1, col2 = st.columns([1, 4])
 col1.image(logo)
 col2.title(page_title)
 
-# -- Drop Down Menus --
+# -- Drop Down Menu Vars --
 #years = ["2022", "2021", "2020", "2019"]
 years = ["2021", "2022"]
 commodity = ["52 - Cotton"]
@@ -33,9 +33,6 @@ for country in areas['text']:
     if country != '842-USA':
         list_areas.append(country)
         
-max_partners = 2
-max_levels = 2
-
 # -- Initiate session_state vars --
 if 'reporterName_raw' not in st.session_state:
     st.session_state.reporterName_raw = '842-USA'    
