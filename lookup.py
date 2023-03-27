@@ -81,10 +81,10 @@ def make_mat(year, comm_codes, flowCode):
     tradeMat.rename(colsToIds, inplace = True)
     tradeMat.rename(columns = colsToIds, inplace = True)
     tradeMat = tradeMat.astype(int)
-    a = list(df['ReporterCode'])
-    b = list(df['PartnerCode'])
-    all_ids = list(pd.DataFrame(a+b)[0].unique())
-    return tradeMat, all_ids
+    # a = list(df['ReporterCode'])
+    # b = list(df['PartnerCode'])
+    # all_ids = list(pd.DataFrame(a+b)[0].unique())
+    return tradeMat, ids
     
 def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     ####
