@@ -1,10 +1,14 @@
 import lookup
+
 import math
-import streamlit as st
-import streamlit.components.v1 as components
+import numpy as np
 import pandas as pd
 from PIL import Image
 import re
+import streamlit as st
+import streamlit.components.v1 as components
+
+
 
 page_title = "Open Trade Data Pilot"
 layout = "centered"
@@ -94,6 +98,39 @@ def table_to_xls(df, flowCode):
             header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
             ).encode('utf-8')
 
+@st.cache_data
+def make_mat(year, comm_code, flowCode):
+    try:
+        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
+        ids = list(tradeMat.index)
+    except:
+        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
+        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
+        ids = list(df['ReporterCode'].unique())
+        temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
+        for i in range(len(ids)):
+            for j in range(len(ids)):
+                if i == j:
+                    temp[i][j] = 0
+                else:
+                    try:
+                        temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ids[j]]['PrimaryValue']/10**6
+                    except:
+                        temp[i][j] = 0
+        tradeMat = pd.DataFrame(temp)
+        tradeMat.index.name = 'id'
+        colsToIds = {}
+        for i, j in zip(range(0, len(ids)), ids):
+            colsToIds[i] = j
+        tradeMat.rename(colsToIds, inplace = True)
+        tradeMat.rename(columns = colsToIds, inplace = True)
+        tradeMat = tradeMat.astype(int)
+        # a = list(df['ReporterCode'])
+        # b = list(df['PartnerCode'])
+        # all_ids = list(pd.DataFrame(a+b)[0].unique())
+        tradeMat.to_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
+    return tradeMat, ids
+    
 # -- Output Area --
 reporterName = re.split('-', st.session_state.reporterName_raw)[1]
 comm_name = re.split('-',st.session_state.comm_code_raw)[1]
@@ -152,13 +189,16 @@ comm_code = int(re.split('-', st.session_state.comm_code_raw)[0])
 flowCode = st.session_state.flow
 levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
-#if min(imp_n**(levels_n + 1), (imp_n + 1)**(levels_n)) > len(areas):
-#    "---"
-#    st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
-#else:
-# -- call lookup.py --         
-response = lookup.deep_search(reporterCode, year, 
-                            comm_code, flowCode, imp_n, levels_n)
+tradeMat, ids = make_mat(year, comm_code, flowCode)
+st.session_state.tradeMat = tradeMat
+
+if reporterCode in ids:
+    # -- call lookup.py --         
+    response = lookup.deep_search(reporterCode, flowCode, 
+                                    imp_n, levels_n, tradeMat)
+else: 
+    response = (False,)
+
 if response[0]:
     # -- lookup.py has made an html file images/result.html --        
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
