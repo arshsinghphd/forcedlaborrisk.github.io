@@ -18,36 +18,43 @@ col1.image(logo)
 col2.title(page_title)
 
 # -- Drop Down Menus --
-years = ["2021", "2020", "2019"]
+#years = ["2022", "2021", "2020", "2019"]
+years = ["2021", "2022"]
 commodity = ["52 - Cotton"]
-trade = ['Export', 'Import', 'Both']
+#trade = ['Export', 'Import', 'Both']
+trade = ['Import', 'Export']
 areas = pd.read_csv('data/areas.csv')
 areas['name'] = areas['id'].astype(str)+ '-' + areas['text_x']
 areas = areas.set_index('id')
 areas = areas.rename(columns={'name' : 'text'})
-areas = areas[['text']]
-max_partners = 10
-max_levels = 10
+
+list_areas = ['842-USA']
+for country in areas['text']:
+    if country != '842-USA':
+        list_areas.append(country)
+        
+max_partners = 2
+max_levels = 2
 
 # -- Initiate session_state vars --
 if 'reporterName_raw' not in st.session_state:
-    st.session_state.reporterName_raw = '4-Afghanistan'    
+    st.session_state.reporterName_raw = '842-USA'    
 if 'year' not in st.session_state:
     st.session_state.year = 2021
 if 'comm_code_raw' not in st.session_state:
     st.session_state.comm_code_raw = '52 - Cotton'
 if 'flow' not in st.session_state:
-    st.session_state.flow = "E"
+    st.session_state.flow = "M"
 if 'imp_n' not in st.session_state:
-    st.session_state.imp_n = 1
+    st.session_state.imp_n = 10
 if 'levels_n' not in st.session_state:
-    st.session_state.levels_n = 1
+    st.session_state.levels_n = 10
 
 # -- Input Form --
 with st.form("entry_form", clear_on_submit=False):
     st.write("In all of the selection boxes, you can choose from the options or you can also delete the default and start typing your choice and options will be suggested.")
     col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
-    reporterName_raw = col1.selectbox(f"Select Country",areas)
+    reporterName_raw = col1.selectbox(f"Select Country",list_areas)
     comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
     flow = col3.selectbox("Trade", trade)
     year = col4.selectbox("Year", years)
@@ -148,25 +155,27 @@ comm_code = int(re.split('-', st.session_state.comm_code_raw)[0])
 flowCode = st.session_state.flow
 levels_n = st.session_state.levels_n # redundant but easy to read
 imp_n = st.session_state.imp_n # redundant but easy to read
-if min(imp_n**(levels_n + 1), (imp_n + 1)**(levels_n)) > len(areas):
-    "---"
-    st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
-else:
-    # -- call lookup.py --         
-    table = lookup.deep_search(reporterCode, year, 
-                                comm_code, flowCode, imp_n, levels_n)
-
+#if min(imp_n**(levels_n + 1), (imp_n + 1)**(levels_n)) > len(areas):
+#    "---"
+#    st.write("Your current selection results in too many countires.\n Please refine your search criteria by adjusting partners or levels.")
+#else:
+# -- call lookup.py --         
+response = lookup.deep_search(reporterCode, year, 
+                            comm_code, flowCode, imp_n, levels_n)
+if response[0]:
     # -- lookup.py has made an html file images/result.html --        
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True)
     "---"
-    
     # -- table download area --
-    dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))        
+    dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))  
+    table = response[1]
     csv = table_to_csv(table, flowCode)
     xls = table_to_xls(table, flowCode)
     if dataDown == 'Excel':
         st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, may move the graph nodes around")
     if dataDown == 'CSV':
         st.download_button("Download CSV", csv, file_name='Table.csv', mime = 'csv', help = "Download file, may move the graph nodes around")
+else:
+    st.write('There is no data for the trade of {} from/to {}'.format(comm_name,reporterName))
