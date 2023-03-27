@@ -95,8 +95,10 @@ def deep_search(reporterCode, year, comm_codes, flowCode, imp_n, levels_n):
     # tradeMat.head()
     
     tradeMat, ids = make_mat(year, comm_codes, flowCode)
-    if reporterCode = 381 and year < 2022:
+    
+    if reporterCode == 381 and year < 2022:
         reporterCode = 380
+    
     if reporterCode not in ids:
         return False, 0
     
