@@ -83,22 +83,27 @@ def make_mat(year, comm_code, flowCode):
         df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
         df = df[['ReporterCode','PartnerCode','PrimaryValue']]
         ids = list(df['ReporterCode'].unique())
-        temp = np.zeros(shape=(len(ids),len(ids)), dtype = 'int64')
+        ps = list(areas.index)
+        temp = np.zeros(shape=(len(ids),len(ps)), dtype = 'int64')
         for i in range(len(ids)):
-            for j in range(len(ids)):
-                if i == j:
-                    temp[i][j] = 0
-                else:
-                    try:
-                        temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ids[j]]['PrimaryValue']/10**6
-                    except:
+            for j in range(len(ps)):
+                if j in range(len(ps)):
+                    if i == j:
                         temp[i][j] = 0
+                    else:
+                        try:
+                            temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ps[j]]['PrimaryValue']/10**6
+                        except:
+                            temp[i][j] = 0
         tradeMat = pd.DataFrame(temp)    
         tradeMat.index.name = 'id'
-        colsToIds = {}
+        idxToIds = {}
         for i, j in zip(range(0, len(ids)), ids):
+            idxToIds[i] = j
+        tradeMat.rename(idxToIds, inplace = True)
+        colsToIds = {}
+        for i, j in zip(range(0, len(ps)), ps):
             colsToIds[i] = j
-        tradeMat.rename(colsToIds, inplace = True)
         tradeMat.rename(columns = colsToIds, inplace = True)
         tradeMat = tradeMat.astype(int)
         # a = list(df['ReporterCode'])
