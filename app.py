@@ -33,7 +33,7 @@ areas = areas.rename(columns={'name' : 'text'})
 
 list_areas = ['842-USA']
 for country in areas['text']:
-    if country != '842-USA':
+    if country != '842-USA' and country != '0-World':
         list_areas.append(country)
         
 # -- Initiate session_state vars --
@@ -77,9 +77,10 @@ if submitted:
 @st.cache_data
 def make_mat(year, comm_code, flowCode):
     try:
-        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index_col = 0)   
-        ids = list(tradeMat.id)
+        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index_col = 0)
+        #tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.json'.format(year, comm_code, flowCode), orient = 'index')
     except:
+        st.write('excepting')
         df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
         df = df[['ReporterCode','PartnerCode','PrimaryValue']]
         ids = list(df['ReporterCode'].unique())
@@ -109,7 +110,9 @@ def make_mat(year, comm_code, flowCode):
         # a = list(df['ReporterCode'])
         # b = list(df['PartnerCode'])
         # all_ids = list(pd.DataFrame(a+b)[0].unique())
-        tradeMat.to_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode))
+        tradeMat.to_json('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index=True)
+        #tradeMat.to_json('data/tradeMat_{}_{}_{}.json'.format(year, comm_code, flowCode), index=True)
+    ids = list(tradeMat.index)
     return tradeMat, ids
 @st.cache_data
 def table_to_csv(df, flowCode):
