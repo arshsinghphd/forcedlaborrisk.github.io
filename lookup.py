@@ -80,16 +80,16 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
     for j in tradeMat.index:
         if j == reporterCode:
             if j not in areas_nodes.keys():
-                areas_nodes[j] = countryNode.node(int(j), 
+                areas_nodes[j] = countryNode.node(j, 
                                             areas.loc[j]['text'], -1)
         else:
             if j not in areas_nodes.keys():
-                areas_nodes[j] = countryNode.node(int(j), 
+                areas_nodes[j] = countryNode.node(j, 
                                             areas.loc[j]['text'])
     
     for j in tradeMat.columns:
         if j not in areas_nodes.keys():
-            areas_nodes[j] = countryNode.node(j, areas.loc[int(j)]['text'])
+            areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     
     ####
     # BLOCK 2: TRADE CALCULATIONS AND BULDING DATAFRAME
@@ -126,7 +126,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                 for j in tradeMat.columns:
                     j = areas_nodes[j]
                     tv = 0
-                    if not j.engaged and int(j.code) > 0:
+                    if not j.engaged and j.code > 0:
                         tv = tradeMat.loc[i, j.code]
                         if tv > 0:
                             j.trade_value = tv
@@ -135,7 +135,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                 idx_trade = min(len(trade), imp_n)
                 trade = trade[:idx_trade]
                 sum_trade = 0
-                tot_trade = tradeMat.loc[i, str(0)]
+                tot_trade = tradeMat.loc[i, 0]
                 counter = 0
                 if len(trade) > 0 and tot_trade > 0:
                     for partner in trade:
