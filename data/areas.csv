@@ -1,4 +1,5 @@
 ,id,text_x
+0,0,World
 1,4,Afghanistan
 2,8,Albania
 3,12,Algeria
@@ -168,7 +169,7 @@
 167,566,Nigeria
 168,579,Norway
 169,512,Oman
-170,490,"Other Asia, nes"
+170,490,"Taiwan - Other Asia, nes"
 171,586,Pakistan
 172,585,Palau
 173,591,Panama
