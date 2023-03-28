@@ -69,10 +69,9 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
     # Based on names and codes in 'areas.csv', 
     # make a dict 'areas_nodes' of node objects keyed by code.
     
-    areas = pd.read_csv('data/areas.csv', )
+    areas = pd.read_csv('data/areas.csv', index_col = 1)
+    areas.drop('Unnamed: 0', axis = 1, inplace = True)
     areas.rename(columns={'text_x' : 'text'}, inplace=True)
-    areas.set_index('id', inplace = True)
-    # make a dict of names to codes
     areas_nameTocode = {}
     for i in areas.index:
         areas_nameTocode[areas.loc[i]['text']] = i 
@@ -81,16 +80,16 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
     for j in tradeMat.index:
         if j == reporterCode:
             if j not in areas_nodes.keys():
-                areas_nodes[j] = countryNode.node(j, 
+                areas_nodes[j] = countryNode.node(int(j), 
                                             areas.loc[j]['text'], -1)
         else:
             if j not in areas_nodes.keys():
-                areas_nodes[j] = countryNode.node(j, 
+                areas_nodes[j] = countryNode.node(int(j), 
                                             areas.loc[j]['text'])
     
     for j in tradeMat.columns:
         if j not in areas_nodes.keys():
-            areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
+            areas_nodes[j] = countryNode.node(j, areas.loc[int(j)]['text'])
     
     ####
     # BLOCK 2: TRADE CALCULATIONS AND BULDING DATAFRAME
@@ -127,7 +126,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                 for j in tradeMat.columns:
                     j = areas_nodes[j]
                     tv = 0
-                    if not j.engaged and j.code > 0:
+                    if not j.engaged and int(j.code) > 0:
                         tv = tradeMat.loc[i, j.code]
                         if tv > 0:
                             j.trade_value = tv
@@ -136,7 +135,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                 idx_trade = min(len(trade), imp_n)
                 trade = trade[:idx_trade]
                 sum_trade = 0
-                tot_trade = tradeMat.loc[i, 0]
+                tot_trade = tradeMat.loc[i, str(0)]
                 counter = 0
                 if len(trade) > 0 and tot_trade > 0:
                     for partner in trade:
