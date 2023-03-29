@@ -53,13 +53,15 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n, ncolor = 'white'):
                         title = '{:.2f}%'.format(partner.trade_value))
                 makePyvisGraph(partner, pyvis_net, flowCode, imp_n)
         if flowCode == "X":
-            pyvis_net.get_node(node.name)['title'] += \
+            if node.parent == 0:
+                pyvis_net.get_node(node.name)['title'] += \
                 '\n {:.2f}% of its exports go to the following'\
-                                            .format(sum_trade, imp_n)
+                                            .format(min(sum_trade, 100), imp_n)
         elif flowCode == "M":
-            pyvis_net.get_node(node.name)['title'] += \
+            if node.parent == 0:
+                pyvis_net.get_node(node.name)['title'] += \
                 '\n {:.2f}% of its imports come from the preceeding'\
-                                            .format(sum_trade, imp_n)
+                                            .format(min(sum_trade, 100), imp_n)
     return 
     
 def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
@@ -88,7 +90,8 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                                             areas.loc[j]['text'])
     
     for j in tradeMat.columns:
-        if j not in areas_nodes.keys():
+        if j not in areas_nodes.keys() and \
+           j in areas.index:
             areas_nodes[j] = countryNode.node(j, areas.loc[j]['text'])
     
     ####
@@ -124,13 +127,14 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
             if i in tradeMat.index:
                 trade = []
                 for j in tradeMat.columns:
-                    j = areas_nodes[j]
-                    tv = 0
-                    if not j.engaged and j.code > 0:
-                        tv = tradeMat.loc[i, j.code]
-                        if tv > 0:
-                            j.trade_value = tv
-                    trade.append(j)
+                    if j in areas.index:
+                        j = areas_nodes[j]
+                        tv = 0
+                        if not j.engaged and j.code > 0:
+                            tv = tradeMat.loc[i, j.code]
+                            if tv > 0:
+                                j.trade_value = tv
+                        trade.append(j)
                 trade.sort(key = lambda x: x.trade_value, reverse=True)
                 idx_trade = min(len(trade), imp_n)
                 trade = trade[:idx_trade]
@@ -167,7 +171,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                                                 'flag':False})
                             index += 1
                 if tot_trade > 0:
-                    country.trade_with_partners = (sum_trade/tot_trade)*100
+                    country.trade_with_partners = min((sum_trade/tot_trade)*100, 100)
                     next_list.extend(country.imp_partners)
         curr_list = next_list
         level += 1
