@@ -75,68 +75,42 @@ if submitted:
 
 # -- define functions before they are called --
 @st.cache_data
-def make_mat(year, comm_code, flowCode):
-    try:
-        st.write('Trying cached data')
-        tradeMat = pd.read_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index_col = 0)
-        ps = list(tradeMat.columns)
-        colsToIds = {}
-        for i in ps:
-            colsToIds[i] = int(i)
-        tradeMat.rename(columns = colsToIds, inplace = True)
-        tradeMat = tradeMat.astype(int)
-    except:
-        st.write('Data not found in cache. Fetching data from source, this may take upto 2 mins.')
-        df = pd.read_csv('data/{}_{}_{}.csv'.format(flowCode, comm_code, year), encoding = 'cp437')
-        df = df[['ReporterCode','PartnerCode','PrimaryValue']]
-        ids = list(df['ReporterCode'].unique())
-        ps = list(areas.index)
-        temp = np.zeros(shape=(len(ids),len(ps)), dtype = 'int64')
-        for i in range(len(ids)):
-            for j in range(len(ps)):
-                if j in range(len(ps)):
-                    if i == j:
-                        temp[i][j] = 0
-                    else:
-                        try:
-                            temp[i][j] = df[df['ReporterCode'] == ids[i]][df['PartnerCode'] == ps[j]]['PrimaryValue']/10**6
-                        except:
-                            temp[i][j] = 0
-        tradeMat = pd.DataFrame(temp)    
-        tradeMat.index.name = 'id'
-        idxToIds = {}
-        for i, j in zip(range(0, len(ids)), ids):
-            idxToIds[i] = j
-        tradeMat.rename(idxToIds, inplace = True)
-        colsToIds = {}
-        for i, j in zip(range(0, len(ps)), ps):
-            colsToIds[i] = j
-        tradeMat.rename(columns = colsToIds, inplace = True)
-        tradeMat = tradeMat.astype(int)
-        tradeMat.to_csv('data/tradeMat_{}_{}_{}.csv'.format(year, comm_code, flowCode), index=True)
+def make_mat(year, comm_code, flowCode):    
+    df = pd.read_csv('data/{}_{}_{}.csv'
+                        .format(flowCode, comm_code, year)
+                            , encoding = 'cp437')
+    df = df[['ReporterCode','PartnerCode','PrimaryValue']]
+    tradeMat = df.pivot(index='ReporterCode', 
+                        columns='PartnerCode', values='PrimaryValue')
+    tradeMat = tradeMat.fillna(0)
+    tradeMat.index.name = 'id'
     ids = list(tradeMat.index)
     return tradeMat, ids
 @st.cache_data
 def table_to_csv(df, flowCode):
-# IMPORTANT: Cache the conversion to prevent computation on every rerun
+# IMPORTANT: Cache and prevent computation on every rerun
     if flowCode == 'X':
         return df.to_csv(sep = ',' , 
-            header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+            header = ['Exporter(A)', 'Importer(B)', 
+                                        'Export(A to B)*', 'Flag']
             ).encode('utf-8')
     elif flowCode == 'M':
         return df.to_csv(sep = ',' , 
-            header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
+            header = ['Importer(A)', 'Exporter(B)', 
+                                        'Import(A from B)*', 'Flag']
             ).encode('utf-8')
 @st.cache_data
 def table_to_xls(df, flowCode):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
     if flowCode == "X":
         return df.to_csv(sep = '\t' , 
-            header = ['Exporter(A)', 'Importer(B)', 'Export(A to B)*', 'Flag']
+            header = ['Exporter(A)', 'Importer(B)', 
+                                        'Export(A to B)*', 'Flag']
             ).encode('utf-8')
     if flowCode == "M":
         return df.to_csv(sep = '\t' , 
-            header = ['Importer(A)', 'Exporter(B)', 'Import(A from B)*', 'Flag']
+            header = ['Importer(A)', 'Exporter(B)', 
+                                        'Import(A from B)*', 'Flag']
             ).encode('utf-8')
 
     
