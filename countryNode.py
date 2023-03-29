@@ -8,5 +8,5 @@ class node:
         self.parent = parent_code
         self.trade_value = 0
         self.imp_partners = []
-        self.trade_with_partners = 0
+        self.red_trade = 0
         # white = unvisited, red = someone's imp trade partner
