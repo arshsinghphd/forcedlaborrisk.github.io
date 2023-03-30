@@ -43,8 +43,8 @@
 41,148,Chad
 42,152,Chile
 43,156,China
-44,344,"China, Hong Kong SAR"
-45,446,"China, Macao SAR"
+44,344,Hong Kong
+45,446,Macao
 46,170,Colombia
 47,174,Comoros
 48,178,Congo
@@ -57,8 +57,8 @@
 55,196,Cyprus
 56,203,Czechia
 57,200,Czechoslovakia
-58,408,"North Korea"
-59,180,Dem. Rep. of the Congo
+58,408,North Korea
+59,180,DRC (Congo-Kinshasa)
 60,208,Denmark
 61,262,Djibouti
 62,212,Dominica
@@ -169,7 +169,7 @@
 167,566,Nigeria
 168,579,Norway
 169,512,Oman
-170,490,"Taiwan: Other Asia, nes"
+170,490,Taiwan
 171,586,Pakistan
 172,585,Palau
 173,591,Panama
@@ -181,7 +181,7 @@
 179,616,Poland
 180,620,Portugal
 181,634,Qatar
-182,410,"South Korea"
+182,410,South Korea
 183,498,Rep. of Moldova
 184,638,Réunion
 185,642,Romania
@@ -241,7 +241,7 @@
 239,804,Ukraine
 240,784,United Arab Emirates
 241,826,United Kingdom
-242,834,United Rep. of Tanzania
+242,834,Tanzania
 243,858,Uruguay
 244,850,US Virgin Isds
 245,842,USA
