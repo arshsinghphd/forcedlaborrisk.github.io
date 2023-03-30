@@ -118,7 +118,14 @@ with form_notice:
         flow = col2.selectbox("Trade", trade)
         year = col3.selectbox("Year", years)
         submitted = st.form_submit_button()
-        
+    if submitted:
+        # -- update session state var --
+        st.session_state.year = year
+        st.session_state.comm_code_raw = comm_code_raw
+        if flow = 'Export':
+            st.session_state.flow = 'X'
+        else:
+            st.session_state.flow = 'M'
     col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
     # -- Drop Down Var for Area -- 
     comm_code, comm_name = re.split('-', st.session_state.comm_code_raw)
