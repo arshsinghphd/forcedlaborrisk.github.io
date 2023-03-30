@@ -122,7 +122,7 @@ with form_notice:
         # -- update session state var --
         st.session_state.year = year
         st.session_state.comm_code_raw = comm_code_raw
-        if flow = 'Export':
+        if flow == 'Export':
             st.session_state.flow = 'X'
         else:
             st.session_state.flow = 'M'
