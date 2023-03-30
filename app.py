@@ -154,28 +154,29 @@ adjust_notice = st.expander("Adjust No. of Partners and Depth Here",
                             expanded=False)
 
 with adjust_notice:
-    col1, col2= st.columns(2)
-    col1.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
-    col2.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
-    col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
+    col1, col2, col3, col4, col5, col6 = st.columns([1,2,1,1,2,1])
 
     # ---- Partners ----
-    inc_part = col2.button('⊕')
+    inc_part = col1.button('⊕')
     if inc_part:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
-    dec_p = col5.button('⊖')
+
+    col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
+    
+    dec_p = col3.button('⊖')
     if dec_p:
         if st.session_state.imp_n > 1:
             st.session_state.imp_n -= 1
     imp_n = st.session_state.imp_n
 
     # ---- Depth ----
-    inc_level = col8.button('↑')
+    inc_level = col4.button('↑')
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
-    dec_level = col11.button('↓')
+    col6.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
+    dec_level = col6.button('↓')
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
