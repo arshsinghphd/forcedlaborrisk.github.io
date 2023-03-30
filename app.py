@@ -193,7 +193,7 @@ with graph_notice:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
             
-    col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
+    col2.markdown('<div style="text-align: center;">Partners</div>', unsafe_allow_html=True)
 
     dec_p = col3.button("⊖")
     if dec_p:
@@ -208,7 +208,7 @@ with graph_notice:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
     
-    col6.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
+    col6.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
     
     dec_level = col6.button('↓')
     if dec_level:
