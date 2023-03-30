@@ -150,24 +150,56 @@ with form_notice:
     reporterCode = int(reporterCode)
 
 # -- Adjust depth and partners --
-adjust_notice = st.expander("Adjust No. of Partners and Depth Here",
-                            expanded=False)
+# adjust_notice = st.expander("Adjust No. of Partners and Depth Here", expanded=False)
+# with adjust_notice:
+    # col1, col2, col3, col4, col5, col6 = st.columns([1,4,1,1,4,1])
 
-with adjust_notice:
+    # # ---- Partners ----
+    # inc_p = col1.button("⊕")
+    # if inc_p:
+        # if st.session_state.imp_n < 10:
+            # st.session_state.imp_n += 1
+            
+    # col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
+
+    # dec_p = col3.button("⊖")
+    # if dec_p:
+        # if st.session_state.imp_n > 1:
+            # st.session_state.imp_n -= 1
+    
+    # imp_n = st.session_state.imp_n
+
+    # # ---- Depth ----
+    # inc_level = col4.button('↑')
+    # if inc_level:
+        # if st.session_state.levels_n < 10:
+            # st.session_state.levels_n += 1
+    
+    # col6.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
+    
+    # dec_level = col6.button('↓')
+    # if dec_level:
+        # if st.session_state.levels_n > 1:
+            # st.session_state.levels_n -= 1
+    # levels_n = st.session_state.levels_n
+
+graph_notice = st.expander("See The Graph Here", expanded = True)
+with graph_notice:
     col1, col2, col3, col4, col5, col6 = st.columns([1,4,1,1,4,1])
 
     # ---- Partners ----
-    inc_part = col1.button("⊕")
-    if inc_part:
+    inc_p = col1.button("⊕")
+    if inc_p:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
-
+            
     col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
-    
+
     dec_p = col3.button("⊖")
     if dec_p:
         if st.session_state.imp_n > 1:
             st.session_state.imp_n -= 1
+    
     imp_n = st.session_state.imp_n
 
     # ---- Depth ----
@@ -175,15 +207,15 @@ with adjust_notice:
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
+    
     col6.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
+    
     dec_level = col6.button('↓')
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
     levels_n = st.session_state.levels_n
-
-graph_notice = st.expander("See The Graph Here", expanded = True)
-with graph_notice:    
+    
     if flow == 'Export':
         st.markdown('#### <div style="text-align: center;"> Path of {} \
         Trade Emerging from {} in the year {}</div>'
