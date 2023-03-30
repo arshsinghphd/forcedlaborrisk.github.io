@@ -78,12 +78,12 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
         if flowCode == "X":
             if node.parent == 0:
                 pyvis_net.get_node(node.name)['title'] += \
-                '\n {:.1f}% exports go to following'\
+                '\n {:.1f}% exports to following'\
                                             .format(min(sum_trade, 100), imp_n)
         elif flowCode == "M":
             if node.parent == 0:
                 pyvis_net.get_node(node.name)['title'] += \
-                '\n {:.1f}% imports come from preceeding'\
+                '\n {:.1f}% imports from preceeding'\
                                             .format(min(sum_trade, 100), imp_n)
     return
 
