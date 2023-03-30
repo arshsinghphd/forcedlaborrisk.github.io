@@ -185,7 +185,7 @@ with form_notice:
 
 graph_notice = st.expander("See The Graph Here", expanded = True)
 with graph_notice:
-    col1, col2, col3, col4, col5, col6 = st.columns([1,4,1,1,4,1])
+    col1, col2, col3, col4, col5, col6 = st.columns([1,2,1,1,2,1])
 
     # ---- Partners ----
     inc_p = col1.button("⊕")
