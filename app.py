@@ -157,14 +157,14 @@ with adjust_notice:
     col1, col2, col3, col4, col5, col6 = st.columns([1,2,1,1,2,1])
 
     # ---- Partners ----
-    inc_part = col1.button('<div style="text-align: center;">⊕</div>', unsafe_allow_html=True)
+    inc_part = col1.button("⊕")
     if inc_part:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
 
     col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
     
-    dec_p = col3.button('<div style="text-align: center;">⊖</div>', unsafe_allow_html=True)
+    dec_p = col3.button("⊖")
     if dec_p:
         if st.session_state.imp_n > 1:
             st.session_state.imp_n -= 1
