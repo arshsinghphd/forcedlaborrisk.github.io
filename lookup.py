@@ -12,7 +12,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
         if node.name in listfl:
             pyvis_net.add_node(node.name,
                             title = node.name + ': Listed' +\
-                            '\n {:.1f}% imports directly from listed countries'
+                            '\n {:.1f}% imports from listed'
                                 .format(node.red_trade), 
                             color = node.color,
                             shape = 'circle',
@@ -21,7 +21,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
         else:
             pyvis_net.add_node(node.name,
                             title = node.name +\
-                            '\n {:.1f}% imports directly from listed countries'
+                            '\n {:.1f}% imports from listed'
                                 .format(node.red_trade), 
                             color = node.color,
                             shape = 'circle',
@@ -43,7 +43,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
                 else:
                     pyvis_net.add_node(partner.name,
                                 title = partner.name + \
-                                '\n {:.1f}% imports directly from listed countries'
+                                '\n {:.1f}% imports from listed countries'
                                 .format(partner.red_trade)
                                 + '\n Imports {:.1f}% of {}\'s Supply'
                                 .format(partner.trade_value, 
@@ -65,7 +65,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
                 else:
                     pyvis_net.add_node(partner.name,
                                 title = partner.name + \
-                                '\n {:.1f}% imports directly from listed countries'
+                                '\n {:.1f}% imports from listed countries'
                                 .format(partner.red_trade) + 
                                 '\n Supplies {:.1f}% of {}\'s Import'
                                 .format(partner.trade_value, 
