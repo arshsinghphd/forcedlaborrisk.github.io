@@ -88,7 +88,7 @@ def makePyvisGraph(node, pyvis_net, flowCode, imp_n):
     return
 
 
-def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
+def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat, comm_name, year):
     ####
     #BLOCK 1
     ####
@@ -208,11 +208,12 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
                                         255*( 1 - country.red_trade/100))
         curr_list = next_list
         level += 1
-        
     if flowCode == "X":
         table.loc['*'] = pd.Series({'a':'As % of total exports of A'})
     elif flowCode == "M":
         table.loc['*'] = pd.Series({'a':'As % of total imports of A'})
+    table.loc[' '] = ('COMMODITY:',comm_name,'','')
+    table.loc['  '] = ('YEAR',year,'','')
     ####
     #BLOCK 3: MAKE GRAPH AND SAVE AS HTML
     ####
@@ -230,4 +231,4 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat):
 
 
 if __name__ == '__main__':
-    deep_search(reporterCode,flowCode,imp_n,levels_n,tradeMat)
+    deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat, comm_name, year)
