@@ -208,7 +208,7 @@ with graph_notice:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
     
-    col6.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
+    col5.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
     
     dec_level = col6.button('↓')
     if dec_level:
