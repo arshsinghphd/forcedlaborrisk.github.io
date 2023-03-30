@@ -154,7 +154,7 @@ adjust_notice = st.expander("Adjust No. of Partners and Depth Here",
                             expanded=False)
 
 with adjust_notice:
-    col1, col2, col3, col4, col5, col6 = st.columns([1,2,1,1,2,1])
+    col1, col2, col3, col4, col5, col6 = st.columns([1,4,1,1,4,1])
 
     # ---- Partners ----
     inc_part = col1.button("⊕")
