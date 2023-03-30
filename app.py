@@ -8,7 +8,6 @@ import re
 import streamlit as st
 import streamlit.components.v1 as components
 
-
 page_title = "Open Trade Data Pilot"
 layout = "centered"
 icon = 'images/STREAMS-logo-v2_White_800.png'
@@ -20,58 +19,31 @@ col1, col2 = st.columns([1, 4])
 col1.image(logo)
 col2.title(page_title)
 
-# -- Drop Down Menu Vars --
-#years = ["2022", "2021", "2020", "2019"]
-years = ["2021", "2022"]
-commodity = ["52 - Cotton"]
-#trade = ['Export', 'Import', 'Both']
-trade = ['Import', 'Export']
-areas = pd.read_csv('data/areas.csv')
-areas['name'] = areas['id'].astype(str)+ '-' + areas['text_x']
-areas = areas.set_index('id')
-areas = areas.rename(columns={'name' : 'text'})
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            footer:after {
+                content:'© Arsh Singh, 2022'; 
+                visibility: visible;
+                display: block;
+                position: relative;
+                #background-color: red;
+                padding: 5px;
+                top: 2px;
+            }
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
-list_areas = ['842-USA']
-for country in areas['text']:
-    if country != '842-USA' and country != '0-World':
-        list_areas.append(country)
-        
-# -- Initiate session_state vars --
-if 'reporterName_raw' not in st.session_state:
-    st.session_state.reporterName_raw = '842-USA'    
-if 'year' not in st.session_state:
-    st.session_state.year = 2021
-if 'comm_code_raw' not in st.session_state:
-    st.session_state.comm_code_raw = '52 - Cotton'
-if 'flow' not in st.session_state:
-    st.session_state.flow = "M"
-if 'imp_n' not in st.session_state:
-    st.session_state.imp_n = 2
-if 'levels_n' not in st.session_state:
-    st.session_state.levels_n = 2
-
-# -- Input Form --
-with st.form("entry_form", clear_on_submit=False):
-    st.write("In all of the selection boxes, you can choose from the options or you can also delete the default and start typing your choice and options will be suggested.")
-    col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
-    reporterName_raw = col1.selectbox(f"Select Country",list_areas)
-    comm_code_raw = col2.selectbox("HS Commodity Code",commodity)
-    flow = col3.selectbox("Trade", trade)
-    year = col4.selectbox("Year", years)
-    dataDown = ''
-    submitted = st.form_submit_button()
-
-# -- Based on Submission, update sesion_state variables --
-if submitted:
-    st.session_state.reporterName_raw = reporterName_raw    
-    st.session_state.year = int(year)
-    st.session_state.comm_code_raw = comm_code_raw
-    if flow == "Export":
-        st.session_state.flow = "X"
-    elif flow == "Import":
-        st.session_state.flow = "M"
-    else:
-        st.session_state.flow = "B"
+# -- New Users Video Demo --
+video_demo_notice = st.expander("First Time? Watch Brief Video Demo Here",
+                            expanded=False)
+with video_demo_notice:
+    video_file = open('data/demo.webm', 'rb')
+    video_bytes = video_file.read()
+    st.video(video_bytes)
 
 # -- define functions before they are called --
 @st.cache_data
@@ -113,89 +85,184 @@ def table_to_xls(df, flowCode):
                                         'Import(A from B)*', 'Flag']
             ).encode('utf-8')
 
-    
-# -- Output Area --
-reporterName = re.split('-', st.session_state.reporterName_raw)[1]
-comm_name = re.split('-',st.session_state.comm_code_raw)[1]
-st.markdown("#### Current Values")
-col1, col2, col3, col4 = st.columns([2, 2, 1, 1])
-col1.write("{}".format(reporterName))
-col2.write("{}".format(comm_name))
-col3.write("{}".format(flow))
-col4.write("{}".format(year))
-st.write("Depending on your search, the names in the network graph below may not be legible, but you can zoom in and out. You can also hold the nodes and move them around to rearrange the network graph.")
-st.write("Red colored nodes: U. S. State Dept. reports that {} grown and processed in that country to have high risk of involving forced and/or child labor. Any countries downstream a red node will also suffer the same risk.".format(comm_name))
-"---"
-if flow == 'Export':
-    st.markdown('#### <div style="text-align: center;"> Path of {} Trade Emerging from {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
-elif flow == 'Import':
-    st.markdown('#### <div style="text-align: center;">Path of {} Trade Reaching {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
-else:
-    st.markdown('#### <div style="text-align: center;">Path of {} Trade Centered at {} in {}</div>'.format(comm_name, reporterName, year),unsafe_allow_html=True)
+# -- Initiate session_state vars --
+def initiate_ss_vars():
+    if 'reporterName_raw' not in st.session_state:
+        st.session_state.reporterName_raw = '842-USA'    
+    if 'year' not in st.session_state:
+        st.session_state.year = 2021
+    if 'comm_code_raw' not in st.session_state:
+        st.session_state.comm_code_raw = '52 - Cotton'
+    if 'flow' not in st.session_state:
+        st.session_state.flow = 'M'
+    if 'imp_n' not in st.session_state:
+        st.session_state.imp_n = 2
+    if 'levels_n' not in st.session_state:
+        st.session_state.levels_n = 2
+
+initiate_ss_vars()
+
+# -- Drop Down Menu Vars --
+years = ["2021", "2022"]
+commodity = ["52 - Cotton"]
+trade = ['Import', 'Export']
+
+
+# -- Input Form --
+form_notice = st.expander("Start Your Search Here",
+                            expanded=False)
+with form_notice:
+    with st.form('form_1', clear_on_submit=False):
+        col1, col2, col3= st.columns([2, 2, 2])
+        comm_code_raw = col1.selectbox("HS Commodity Code",commodity)
+        flow = col2.selectbox("Trade", trade)
+        year = col3.selectbox("Year", years)
+        submitted = st.form_submit_button()
+        
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+    # -- Drop Down Var for Area -- 
+    comm_code, comm_name = re.split('-', st.session_state.comm_code_raw)
+    comm_code = int(comm_code)
+    flowCode = st.session_state.flow
+    tradeMat, ids = make_mat(year, comm_code, flowCode)
+    areas = pd.read_csv('data/areas.csv', index_col = 1)
+    areas.drop('Unnamed: 0', axis = 1, inplace = True)
+    areas.rename(columns={'text_x' : 'text'}, inplace=True)
+    areas_codeToName = {i:areas.loc[i]['text'] for i in areas.index}
+    for i in areas.index:
+        areas_codeToName[i] = areas.loc[i]['text']
+    list_areas = [str(i)+'-'+areas_codeToName[i] for i in tradeMat.index]
+    list_areas.sort()
+    if '842-USA' in list_areas:
+        list_areas.remove('842-USA')
+        list_areas.insert(0,'842-USA')
+    reporterName_raw = st.selectbox("Country",list_areas)
+    # -- update session state var --
+    st.session_state.reporterName_raw = reporterName_raw  
+    reporterCode, reporterName = re.split('-', st.session_state.reporterName_raw)
+    reporterCode = int(reporterCode)
 
 # -- Adjust depth and partners --
-col1, col2= st.columns(2)
-col1.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
-col2.markdown('<div style="text-align: center;">Adjust Levels</div>', unsafe_allow_html=True)
-col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
+adjust_notice = st.expander("Adjust No. of Partners and Depth Here",
+                            expanded=False)
 
-# ---- Partners ----
-inc_part = col2.button('⊕')
-if inc_part:
-    if st.session_state.imp_n < 10:
-        st.session_state.imp_n += 1
-dec_p = col5.button('⊖')
-if dec_p:
-    if st.session_state.imp_n > 1:
-        st.session_state.imp_n -= 1
-imp_n = st.session_state.imp_n
+with adjust_notice:
+    col1, col2= st.columns(2)
+    col1.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
+    col2.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
+    col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12 = st.columns(12)
 
-# ---- Depth ----
-inc_level = col8.button('↑')
-if inc_level:
-    if st.session_state.levels_n < 10:
-        st.session_state.levels_n += 1
-dec_level = col11.button('↓')
-if dec_level:
-    if st.session_state.levels_n > 1:
-        st.session_state.levels_n -= 1
-levels_n = st.session_state.levels_n
-col1, col2= st.columns(2)
-col1.write("No. Imp. trade partners: {}.".format(imp_n))
-col2.write("Search {} level(s) deep".format(levels_n))
+    # ---- Partners ----
+    inc_part = col2.button('⊕')
+    if inc_part:
+        if st.session_state.imp_n < 10:
+            st.session_state.imp_n += 1
+    dec_p = col5.button('⊖')
+    if dec_p:
+        if st.session_state.imp_n > 1:
+            st.session_state.imp_n -= 1
+    imp_n = st.session_state.imp_n
 
-# -- lookup --
-#st.write(st.session_state)
-reporterCode = int(re.split('-', st.session_state.reporterName_raw)[0])
-year = st.session_state.year
-comm_code = int(re.split('-', st.session_state.comm_code_raw)[0])
-flowCode = st.session_state.flow
-levels_n = st.session_state.levels_n # redundant but easy to read
-imp_n = st.session_state.imp_n # redundant but easy to read
-tradeMat, ids = make_mat(year, comm_code, flowCode)
-#st.session_state.tradeMat = tradeMat
-#st.write(tradeMat.head())
-if reporterCode in ids:
-    # -- call lookup.py --         
+    # ---- Depth ----
+    inc_level = col8.button('↑')
+    if inc_level:
+        if st.session_state.levels_n < 10:
+            st.session_state.levels_n += 1
+    dec_level = col11.button('↓')
+    if dec_level:
+        if st.session_state.levels_n > 1:
+            st.session_state.levels_n -= 1
+    levels_n = st.session_state.levels_n
+
+graph_notice = st.expander("See The Graph Here", expanded = True)
+with graph_notice:    
+    if flow == 'Export':
+        st.markdown('#### <div style="text-align: center;"> Path of {} \
+        Trade Emerging from {} in the year {}</div>'
+        .format(comm_name, reporterName, year),unsafe_allow_html=True)
+    else:
+        st.markdown('#### <div style="text-align: center;">Path of {} \
+        Trade Reaching {} in the year {}</div>'
+        .format(comm_name, reporterName, year),unsafe_allow_html=True)
+
+    col1, col2, col3, col4, col5= st.columns([1,1,2,1,1])
+    col2.write("No. partners: \n {}".format(imp_n))
+    col4.write("Depth: \n {}".format(levels_n))
+
+    # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
-                                    imp_n, levels_n, tradeMat)
-else: 
-    response = (False,)
+                                        imp_n, levels_n, tradeMat, comm_name, year)
 
-if response[0]:
-    # -- lookup.py has made an html file images/result.html --        
+    # -- Output Area -- 
+    # -- lookup.py has made an html file images/result.html --  
+
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    components.html(source_code, height=410, scrolling=True)
-    "---"
-    # -- table download area --
-    dataDown = st.radio("Would you like to download the underlying data as a file?",('No','Excel', 'CSV'))  
-    table = response[1]
-    csv = table_to_csv(table, flowCode)
-    xls = table_to_xls(table, flowCode)
-    if dataDown == 'Excel':
-        st.download_button("Download Excel", xls, file_name='Table.xls', mime = 'xls', help = "Download file, may move the graph nodes around")
-    if dataDown == 'CSV':
-        st.download_button("Download CSV", csv, file_name='Table.csv', mime = 'csv', help = "Download file, may move the graph nodes around")
-else:
-    st.write('There is no data for the trade of {} from/to {}'.format(comm_name,reporterName))
+    components.html(source_code, height=410, scrolling=True) 
+    st.write("Depending on your search, the names in the network graph \
+              below may not be legible, but you can zoom in and out. \
+              You can also hold the nodes and move them around to \
+              rearrange the network graph.")
+
+node_colors_notice = st.expander("About the Color Scheme of the Nodes", expanded=False)
+with node_colors_notice:
+    col1, col2 = st.columns([2,8])
+    #col1.markdown(<div> bg-color: rgb(255,0,0) "RED" <\div>)
+    col1.write("")
+    col1.write("")
+    col1.markdown(f'<p style="background-color:rgb(255,0,0);\
+                    color:rgb(0,0,0); text-align:center">RED</p>', 
+                    unsafe_allow_html=True)
+    col2.write("U. S. State Dept. reports a list of countries that have \
+              a high risk of involving forced and/or child labor. Such \
+              countries are colored red and labelled 'Listed'. Any \
+              countries downstream a red node will also suffer a risk, \
+              which is color coded in shades from pink to white.")
+    col1, col2 = st.columns([2,8])
+    col1.write("")
+    col1.write("")
+    col1.markdown(f'<p style="background-color:rgb(200,100,100);\
+                    color:rgb(0,0,0);text-align:center">PINK</p>',
+                    unsafe_allow_html=True)
+    col1.markdown(f'<p style="background-color:rgb(200,255,255);\
+                    text-align:center;color:rgb(0,0,0)">WHITE</p>',
+                    unsafe_allow_html=True)
+    col2.write("The color of the node for a country not in the \
+                (U. S. State Dept.) list depends on the proportion \
+                of its imports that come \
+                from the listed countries - even the ones that \
+                do not appear on the graph.")
+    col2.write("**Darker the color, higher the \
+                risk of involvement of forced or child labor in its \
+                imports.**")
+
+# -- table download area --
+table = response[1]
+xls = table_to_xls(table, flowCode)
+csv = table_to_csv(table, flowCode)
+download_notice = st.expander("Download Data?", expanded = False)
+with download_notice:
+    col1, col2, col3, col4 = st.columns([3,2,2,12]) 
+    col2.download_button(".xls", xls, file_name='Table.xls', 
+                       mime = 'xls')
+    col3.download_button(".csv", csv, file_name='Table.csv', 
+                       mime = 'csv')
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            footer:after {
+                content:'© Arsh Singh, 2022'; 
+                visibility: visible;
+                display: block;
+                position: relative;
+                #background-color: red;
+                padding: 5px;
+                top: 2px;
+            }
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+#st.markdown("(c) Arsh Singh, 2023", unsafe_allow_html=True)
