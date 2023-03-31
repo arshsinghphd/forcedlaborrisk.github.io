@@ -195,7 +195,7 @@ with graph_notice:
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1,1,8],gap="small")
+    col1, col3 = st.columns([.5,9],gap="small")
     # ---- Partners ----
     inc_p = col1.button("\u2295") #circle +
     col1.markdown('<div style="text-align: left;">Partners</div>', unsafe_allow_html=True)
@@ -210,19 +210,19 @@ with graph_notice:
     imp_n = st.session_state.imp_n
     
     # ---- Depth ----
-    inc_level = col2.button('\u2191') # arrow up
+    inc_level = col1.button('\u2191') # arrow up
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
-    col2.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
-    col2.markdown('')
-    dec_level = col2.button('\u2193') # arrow down
+    col1.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
+    col1.markdown('')
+    dec_level = col1.button('\u2193') # arrow down
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
     levels_n = st.session_state.levels_n
     
-    col3.write("No. partners: \n {}, Depth: \n {}".format(imp_n, levels_n))
+    col3.write("No. partners: {}, Depth: {}".format(imp_n, levels_n))
     # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
                                         imp_n, levels_n, tradeMat, comm_name, year)
