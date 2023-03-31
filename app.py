@@ -163,7 +163,7 @@ with graph_notice:
     col1, col2 = st.columns([1,1], gap = 'medium')
     st.session_state.imp_n = col1.slider('Partners', min_value=1, max_value=10, step=1)
     imp_n = st.session_state.imp_n
-    st.session_state.levels_n = col2.slider('Depth', min_value=1, max_value=10, step=1)
+    st.session_state.levels_n = col2.slider('Depth', min_value=1, max_value=5, step=1)
     levels_n = st.session_state.levels_n
     st.write("No. partners: {}, Depth: {}".format(imp_n, levels_n))
     
