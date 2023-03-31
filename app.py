@@ -176,7 +176,7 @@ with graph_notice:
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True) 
     st.write("Tap or hover over country nodes for metrics.")
-    st.write("Zoom in and Out.")
+    st.write("Zoom in and out.")
     st.write("Try moving nodes around.")
     # st.write("Depending on your search, the names in the network graph \
               # below may not be legible, but you can zoom in and out. \
