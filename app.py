@@ -195,34 +195,12 @@ with graph_notice:
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
     
-    col1, col3 = st.columns([.5,9],gap="small")
-    # ---- Partners ----
-    inc_p = col1.button("\u2295") #circle +
-    col1.markdown('<div style="text-align: left;">Partners</div>', unsafe_allow_html=True)
-    col1.markdown('')
-    if inc_p:
-        if st.session_state.imp_n < 10:
-            st.session_state.imp_n += 1
-    dec_p = col1.button("\u2296") # circle -
-    if dec_p:
-        if st.session_state.imp_n > 1:
-            st.session_state.imp_n -= 1
+    st.session_state.imp_n = st.slider('Partners', min_value=1, max_value=10, step=1)
     imp_n = st.session_state.imp_n
-    
-    # ---- Depth ----
-    inc_level = col1.button('\u2191') # arrow up
-    if inc_level:
-        if st.session_state.levels_n < 10:
-            st.session_state.levels_n += 1
-    col1.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
-    col1.markdown('')
-    dec_level = col1.button('\u2193') # arrow down
-    if dec_level:
-        if st.session_state.levels_n > 1:
-            st.session_state.levels_n -= 1
+    st.session_state.levels_n = st.slider('Depth', min_value=1, max_value=10, step=1)
     levels_n = st.session_state.levels_n
     
-    col3.write("No. partners: {}, Depth: {}".format(imp_n, levels_n))
+    st.write("No. partners: {}, Depth: {}".format(imp_n, levels_n))
     # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
                                         imp_n, levels_n, tradeMat, comm_name, year)
@@ -232,8 +210,7 @@ with graph_notice:
 
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    with col3:
-        components.html(source_code, height=410, scrolling=True) 
+    components.html(source_code, height=410, scrolling=True) 
     st.write("Depending on your search, the names in the network graph \
               below may not be legible, but you can zoom in and out. \
               You can also hold the nodes and move them around to \
