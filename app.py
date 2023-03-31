@@ -96,9 +96,9 @@ def initiate_ss_vars():
     if 'flow' not in st.session_state:
         st.session_state.flow = 'M'
     if 'imp_n' not in st.session_state:
-        st.session_state.imp_n = 2
+        st.session_state.imp_n = 1
     if 'levels_n' not in st.session_state:
-        st.session_state.levels_n = 2
+        st.session_state.levels_n = 1
 
 initiate_ss_vars()
 
@@ -149,43 +149,9 @@ with form_notice:
     reporterCode, reporterName = re.split('-', st.session_state.reporterName_raw)
     reporterCode = int(reporterCode)
 
-# -- Adjust depth and partners --
-# adjust_notice = st.expander("Adjust No. of Partners and Depth Here", expanded=False)
-# with adjust_notice:
-    # col1, col2, col3, col4, col5, col6 = st.columns([1,4,1,1,4,1])
-
-    # # ---- Partners ----
-    # inc_p = col1.button("⊕")
-    # if inc_p:
-        # if st.session_state.imp_n < 10:
-            # st.session_state.imp_n += 1
-            
-    # col2.markdown('<div style="text-align: center;">Adjust Partners</div>', unsafe_allow_html=True)
-
-    # dec_p = col3.button("⊖")
-    # if dec_p:
-        # if st.session_state.imp_n > 1:
-            # st.session_state.imp_n -= 1
-    
-    # imp_n = st.session_state.imp_n
-
-    # # ---- Depth ----
-    # inc_level = col4.button('↑')
-    # if inc_level:
-        # if st.session_state.levels_n < 10:
-            # st.session_state.levels_n += 1
-    
-    # col6.markdown('<div style="text-align: center;">Adjust Depth</div>', unsafe_allow_html=True)
-    
-    # dec_level = col6.button('↓')
-    # if dec_level:
-        # if st.session_state.levels_n > 1:
-            # st.session_state.levels_n -= 1
-    # levels_n = st.session_state.levels_n
-
+# -- Output Area -- 
 graph_notice = st.expander("See The Graph Here", expanded = True)
-with graph_notice:
-    
+with graph_notice:   
     if flow == 'Export':
         st.markdown('#### <div style="text-align: center;"> Path of {} \
         Trade Emerging from {} in the year {}</div>'
@@ -194,23 +160,22 @@ with graph_notice:
         st.markdown('#### <div style="text-align: center;">Path of {} \
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
-    
-    st.session_state.imp_n = st.slider('Partners', min_value=1, max_value=10, step=1)
+    col1, col2 = st.columns([1,1], gap = 'medium')
+    st.session_state.imp_n = col1.slider('Partners', min_value=1, max_value=10, step=1)
     imp_n = st.session_state.imp_n
-    st.session_state.levels_n = st.slider('Depth', min_value=1, max_value=10, step=1)
+    st.session_state.levels_n = col2.slider('Depth', min_value=1, max_value=10, step=1)
     levels_n = st.session_state.levels_n
-    
     st.write("No. partners: {}, Depth: {}".format(imp_n, levels_n))
+    
     # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
                                         imp_n, levels_n, tradeMat, comm_name, year)
-
-    # -- Output Area -- 
+    
     # -- lookup.py has made an html file images/result.html --  
-
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True) 
+    
     st.write("Depending on your search, the names in the network graph \
               below may not be legible, but you can zoom in and out. \
               You can also hold the nodes and move them around to \
@@ -219,7 +184,6 @@ with graph_notice:
 node_colors_notice = st.expander("About the Color Scheme of the Nodes", expanded=False)
 with node_colors_notice:
     col1, col2 = st.columns([2,8])
-    #col1.markdown(<div> bg-color: rgb(255,0,0) "RED" <\div>)
     col1.write("")
     col1.write("")
     col1.markdown(f'<p style="background-color:rgb(255,0,0);\
