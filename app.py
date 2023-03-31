@@ -195,7 +195,7 @@ with graph_notice:
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1,8,1],gap="small")
+    col1, col2, col3 = st.columns([1,1,8],gap="small")
     # ---- Partners ----
     inc_p = col1.button("\u2295") #circle +
     col1.markdown('<div style="text-align: left;">Partners</div>', unsafe_allow_html=True)
@@ -210,19 +210,19 @@ with graph_notice:
     imp_n = st.session_state.imp_n
     
     # ---- Depth ----
-    inc_level = col3.button('\u2191') # arrow up
+    inc_level = col2.button('\u2191') # arrow up
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
-    col3.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
-    col3.markdown('')
-    dec_level = col3.button('\u2193') # arrow down
+    col2.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
+    col2.markdown('')
+    dec_level = col2.button('\u2193') # arrow down
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
     levels_n = st.session_state.levels_n
     
-    col2.write("No. partners: \n {}, Depth: \n {}".format(imp_n, levels_n))
+    col3.write("No. partners: \n {}, Depth: \n {}".format(imp_n, levels_n))
     # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
                                         imp_n, levels_n, tradeMat, comm_name, year)
@@ -232,7 +232,7 @@ with graph_notice:
 
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
-    with col2:
+    with col3:
         components.html(source_code, height=410, scrolling=True) 
     st.write("Depending on your search, the names in the network graph \
               below may not be legible, but you can zoom in and out. \
