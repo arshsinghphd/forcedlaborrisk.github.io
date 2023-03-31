@@ -221,7 +221,7 @@ def deep_search(reporterCode, flowCode, imp_n, levels_n, tradeMat, comm_name, ye
     #pyvis_net = Network(height="400px", width="100%", 
     #                    bgcolor="#222222", font_color="white", 
     #                    directed=True)
-    pyvis_net = Network(height="400px", width="100%", 
+    pyvis_net = Network(height="400px", width="80%", 
                         bgcolor="#222222", font_color="black", 
                         directed=True)
     makePyvisGraph(areas_nodes[reporterCode], pyvis_net, flowCode, imp_n)
