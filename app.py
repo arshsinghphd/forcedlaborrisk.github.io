@@ -175,11 +175,14 @@ with graph_notice:
     HtmlFile = open("images/result.html", 'r', encoding='utf-8')
     source_code = HtmlFile.read()
     components.html(source_code, height=410, scrolling=True) 
-    
-    st.write("Depending on your search, the names in the network graph \
-              below may not be legible, but you can zoom in and out. \
-              You can also hold the nodes and move them around to \
-              rearrange the network graph.")
+    st.write("Tap or hover over country nodes for metrics.")
+    st.write("Zoom in and Out.")
+    st.write("Try moving nodes around.")
+              
+    # st.write("Depending on your search, the names in the network graph \
+              # below may not be legible, but you can zoom in and out. \
+              # You can also hold the nodes and move them around to \
+              # rearrange the network graph.")
 
 node_colors_notice = st.expander("About the Color Scheme of the Nodes", expanded=False)
 with node_colors_notice:
