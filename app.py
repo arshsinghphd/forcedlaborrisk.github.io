@@ -185,33 +185,29 @@ with form_notice:
 
 graph_notice = st.expander("See The Graph Here", expanded = True)
 with graph_notice:
-    col1, col2= st.columns([1,1])
+    col1, col2, col3,col4= st.columns([1,1,1,3])
 
     # ---- Partners ----
-    inc_p = col1.button("⊕")
+    inc_p = col1.button("\u2295") #circle +
     if inc_p:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
-    adj_p = '<div style="text-align: center;">Partners</div>'
-    col1.markdown(adj_p,unsafe_allow_html=True)
-    #col2.markdown('<div style="text-align: center;">Partners</div>', unsafe_allow_html=True)
-
-    dec_p = col1.button("⊖")
+    col2.markdown('<div style="text-align: left;">Partners</div>', unsafe_allow_html=True)
+    dec_p = col3.button("\u2296") # circle -
     if dec_p:
         if st.session_state.imp_n > 1:
             st.session_state.imp_n -= 1
-    
     imp_n = st.session_state.imp_n
-
+    
     # ---- Depth ----
-    inc_level = col2.button('↑')
+    inc_level = col1.button('\u2191') # arrow up
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
-    
-    col2.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
-    
-    dec_level = col2.button('↓')
+    col2.markdown("")
+    col2.markdown("")
+    col2.markdown('<div style="text-align: left;">Depth</div>', unsafe_allow_html=True)
+    dec_level = col3.button('\u2192') # arrow down
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
@@ -226,10 +222,10 @@ with graph_notice:
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
 
-    col1, col2, col3, col4, col5= st.columns([1,1,2,1,1])
-    col2.write("No. partners: \n {}".format(imp_n))
-    col4.write("Depth: \n {}".format(levels_n))
-
+    #col1, col2, col3, col4, col5= st.columns([1,1,2,1,1])
+    #col2.write("No. partners: \n {}".format(imp_n))
+    #col4.write("Depth: \n {}".format(levels_n))
+    st.write("No. partners: \n {}, Depth: \n {}".format(imp_n, levels_n))
     # -- lookup -- 
     response = lookup.deep_search(reporterCode, flowCode, 
                                         imp_n, levels_n, tradeMat, comm_name, year)
