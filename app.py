@@ -103,7 +103,8 @@ def initiate_ss_vars():
 initiate_ss_vars()
 
 # -- Drop Down Menu Vars --
-years = ["2021", "2022"]
+#years = ["2021", "2022"]
+years = ["2021"]
 commodity = ["52 - Cotton"]
 trade = ['Import', 'Export']
 
