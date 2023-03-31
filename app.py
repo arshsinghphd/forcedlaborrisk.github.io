@@ -185,17 +185,18 @@ with form_notice:
 
 graph_notice = st.expander("See The Graph Here", expanded = True)
 with graph_notice:
-    col1, col2, col3, col4, col5, col6 = st.columns([1,2,1,1,2,1])
+    col1, col2= st.columns([1,1])
 
     # ---- Partners ----
     inc_p = col1.button("⊕")
     if inc_p:
         if st.session_state.imp_n < 10:
             st.session_state.imp_n += 1
-            
-    col2.markdown('<div style="text-align: center;">Partners</div>', unsafe_allow_html=True)
+    adj_p = '<div style="text-align: center;">Partners</div>'
+    col1.markdown(adj_p,unsafe_allow_html=True)
+    #col2.markdown('<div style="text-align: center;">Partners</div>', unsafe_allow_html=True)
 
-    dec_p = col3.button("⊖")
+    dec_p = col1.button("⊖")
     if dec_p:
         if st.session_state.imp_n > 1:
             st.session_state.imp_n -= 1
@@ -203,14 +204,14 @@ with graph_notice:
     imp_n = st.session_state.imp_n
 
     # ---- Depth ----
-    inc_level = col4.button('↑')
+    inc_level = col2.button('↑')
     if inc_level:
         if st.session_state.levels_n < 10:
             st.session_state.levels_n += 1
     
-    col5.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
+    col2.markdown('<div style="text-align: center;">Depth</div>', unsafe_allow_html=True)
     
-    dec_level = col6.button('↓')
+    dec_level = col2.button('↓')
     if dec_level:
         if st.session_state.levels_n > 1:
             st.session_state.levels_n -= 1
