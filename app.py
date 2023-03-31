@@ -18,7 +18,7 @@ logo = Image.open('images/Verite-Wordmark-Web-Small-2.jpg')
 col1, col2 = st.columns([1, 4])
 col1.image(logo)
 col2.title(page_title)
-
+st.markdown("#### Visualize the Risk of Unfair Labor in International Trade")
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
@@ -178,7 +178,6 @@ with graph_notice:
     st.write("Tap or hover over country nodes for metrics.")
     st.write("Zoom in and Out.")
     st.write("Try moving nodes around.")
-              
     # st.write("Depending on your search, the names in the network graph \
               # below may not be legible, but you can zoom in and out. \
               # You can also hold the nodes and move them around to \
