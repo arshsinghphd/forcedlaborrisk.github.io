@@ -226,22 +226,3 @@ with download_notice:
                        mime = 'xls')
     col3.download_button(".csv", csv, file_name='Table.csv', 
                        mime = 'csv')
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            footer:after {
-                content:'© Arsh Singh, 2022'; 
-                visibility: visible;
-                display: block;
-                position: relative;
-                #background-color: red;
-                padding: 5px;
-                top: 2px;
-            }
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-#st.markdown("(c) Arsh Singh, 2023", unsafe_allow_html=True)
