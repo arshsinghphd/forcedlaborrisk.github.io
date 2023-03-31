@@ -185,18 +185,18 @@ with form_notice:
 
 graph_notice = st.expander("See The Graph Here", expanded = True)
 with graph_notice:
-    col1, col2, col3 = st.columns([1,8,1],gap="small")
+    
     if flow == 'Export':
-        col2.markdown('#### <div style="text-align: center;"> Path of {} \
+        st.markdown('#### <div style="text-align: center;"> Path of {} \
         Trade Emerging from {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
     else:
-        col2.markdown('#### <div style="text-align: center;">Path of {} \
+        st.markdown('#### <div style="text-align: center;">Path of {} \
         Trade Reaching {} in the year {}</div>'
         .format(comm_name, reporterName, year),unsafe_allow_html=True)
     
+    col1, col2, col3 = st.columns([1,8,1],gap="small")
     # ---- Partners ----
-    
     inc_p = col1.button("\u2295") #circle +
     col1.markdown('<div style="text-align: left;">Partners</div>', unsafe_allow_html=True)
     col1.markdown('')
