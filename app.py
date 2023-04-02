@@ -1,5 +1,5 @@
-#import lookup_repeatCountries as lookup
-import lookup
+import lookup_repeatCountries as lookup
+
 
 import math
 import numpy as np
@@ -64,26 +64,22 @@ def table_to_csv(df, flowCode):
 # IMPORTANT: Cache and prevent computation on every rerun
     if flowCode == 'X':
         return df.to_csv(sep = ',' , 
-            header = ['Exporter(A)', 'Importer(B)', 
-                                        'Export(A to B)*', 'Flag']
+            header = ['From (A)', 'To (B)', 'Export*', 'Flag']
             ).encode('utf-8')
     elif flowCode == 'M':
         return df.to_csv(sep = ',' , 
-            header = ['Importer(A)', 'Exporter(B)', 
-                                        'Import(A from B)*', 'Flag']
+            header = ['From(A) ', 'To(B)', 'Import*', 'Flag']
             ).encode('utf-8')
 @st.cache_data
 def table_to_xls(df, flowCode):
 # IMPORTANT: Cache the conversion to prevent computation on every rerun
     if flowCode == "X":
         return df.to_csv(sep = '\t' , 
-            header = ['Exporter(A)', 'Importer(B)', 
-                                        'Export(A to B)*', 'Flag']
+            header = ['From (A)', 'To (B)', 'Export*', 'Flag']
             ).encode('utf-8')
     if flowCode == "M":
         return df.to_csv(sep = '\t' , 
-            header = ['Importer(A)', 'Exporter(B)', 
-                                        'Import(A from B)*', 'Flag']
+            header = ['From (A)', 'To (B)', 'Import*', 'Flag']
             ).encode('utf-8')
 
 # -- Initiate session_state vars --
