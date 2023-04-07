@@ -148,7 +148,7 @@ with form_notice:
     reporterCode = int(reporterCode)
 
 # -- Output Area -- 
-graph_notice = st.expander("See The Graph Here", expanded = True)
+graph_notice = st.expander("See the Graph Here", expanded = True)
 with graph_notice:   
     if flow == 'Export':
         st.markdown('#### <div style="text-align: center;"> Path of {} \
