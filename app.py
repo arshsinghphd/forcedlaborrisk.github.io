@@ -189,7 +189,7 @@ with node_colors_notice:
     col1.markdown(f'<p style="background-color:rgb(255,0,0);\
                     color:rgb(0,0,0); text-align:center">RED</p>', 
                     unsafe_allow_html=True)
-    col2.write("U. S. State Dept. reports a list of countries that have \
+    col2.write("U. S. Dept. of Labor reports a list of countries that have \
               a high risk of involving forced and/or child labor. Such \
               countries are colored red and labelled 'Listed'. Any \
               countries downstream a red node will also suffer a risk, \
@@ -204,7 +204,7 @@ with node_colors_notice:
                     text-align:center;color:rgb(0,0,0)">WHITE</p>',
                     unsafe_allow_html=True)
     col2.write("The color of the node for a country not in the \
-                (U. S. State Dept.) list depends on the proportion \
+                (U. S. Dept. of Labor) list depends on the proportion \
                 of its imports that come \
                 from the listed countries - even the ones that \
                 do not appear on the graph.")
