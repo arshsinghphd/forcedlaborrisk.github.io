@@ -77,7 +77,6 @@ For technical clarifications or comments, write to:
 2. WORKING
 
 app.py 
-
 	Makes the user interface using streamlit.
 	Takes inputs from user
 	Creates graphs 
@@ -99,7 +98,6 @@ app.py
 			list_fl_cotton
 	
 lookup.py 
-
 	analyses trade data,
 	matches countries in trade file with DoL's list of Forced and Child Labor, 
 	processes these to make pyvis graphs.
@@ -111,7 +109,6 @@ lookup.py
 		countryNode.py
 
 countryNode.py
-
 	creates a class Node
  
 	
