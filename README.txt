@@ -38,7 +38,7 @@ One live instance as a sample of what it looks like and does, is hosted for free
 
 https://arshsinghphd-forcedlaborrisk-github-io-app-5pqff6.streamlit.app
 
-You may need to ask the "Get this app up" and wait for it streamlit to spin the container.
+You may need to ask to "get this app up" and wait for streamlit to spin the container.
 
 
 IDEAS FOR YOU CAN DO WITH IT
