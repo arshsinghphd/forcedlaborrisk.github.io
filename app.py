@@ -1,6 +1,5 @@
 import lookup as lookup
 
-
 import math
 import numpy as np
 import pandas as pd
