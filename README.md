@@ -55,8 +55,10 @@ For technical clarifications or comments, write to:
 2. WORKING
 
 app.py 
-	Makes the user interface using streamlit. 
-		Dependencies: 
+	Makes the user interface using streamlit.
+	Takes inputs from user
+	Creates graphs 
+	Allows users to download csv or xls files.
 		calls:
 			lookup.py. 
 		Uses: 
@@ -72,11 +74,14 @@ app.py
 				list_fl_cotton.csv
 
 lookup.py 
-	Data analysis, 
-	matching with DoL's list of Forced and Child Labor, 
+	analyses trade data,
+	matching countries in trade file with DoL's list of Forced and Child Labor, 
 	processes these to make pyvis graphs.
-		Dependencies:
-		calls countryNode.py
+		is called by: 
+			app.py
+		calls:
+			countryNode.py
 
 countryNode.py
-
+	creates a class Node
+	
