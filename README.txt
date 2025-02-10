@@ -35,7 +35,7 @@ One live instance as a sample of what it looks like and does, is hosted for free
 You may need to ask to "get this app up" and wait for streamlit to spin the container.
 
 
-IDEAS FOR YOU CAN DO WITH IT
+IDEAS FOR WHAT YOU CAN DO WITH IT
 
 It is a public repository and can be in one of the following ways.
 1. Use it in its current form for education of how the commodities that are made using child or forced labor disseminate across international trade.
