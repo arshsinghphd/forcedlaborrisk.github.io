@@ -87,13 +87,14 @@ app.py
 		(2) images to make thumbnail and logo. 
 		(1) video for demo
 		(6) csv files
+			list_fl_cotton (list of areas known to have with forced labor in cotton trade/production)
 			areas (list of trade areas)
 			(M for import, X for export)
 			M_52_2021 
 			M_52_2022 
 			X_52_2021
 			X_52_2022
-			list_fl_cotton
+			
 	
 lookup.py 
 	analyses trade data,
