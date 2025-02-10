@@ -37,51 +37,86 @@ For technical clarifications or comments, write to:
 	Arsh, arshsinghphd@gmail.com.
  
 1. FILES and FOLDERS:
-	The repo has three functions (python3): 
-	app.py, 
-	lookup.py, and 
-	countryNode.py.
+	
+ The repo has three functions (python3): 
 
-	A list of packages needed to create the docker/venv
-	requirements.txt
+ 	app.py, 
 
-	Subdirectories:
-		"data" stores data, 
-		"images" stores images. 
-		The program  creates two called 
-		"lib" and 
-		"__pycache__". 
+ 	lookup.py, and 
+
+ 	countryNode.py.
+
+A list of packages needed to create the docker/venv
+	
+  	requirements.txt
+
+Subdirectories:
+
+	"data" stores data, 
+	
+ 	"images" stores images. 
+
+	The program  creates two called 
+	
+ 	"lib" and 
+	
+ 	"__pycache__". 
 
 2. WORKING
 
 app.py 
-	Makes the user interface using streamlit.
-	Takes inputs from user
-	Creates graphs 
-	Allows users to download csv or xls files.
-		calls:
-			lookup.py. 
-		Uses: 
-			(2) images to make thumbnail and logo. 
-			(1) video for demo
-			(6) csv files
-				areas (list of trade areas)
-				(M for import, X for export)
-				M_52_2021 
-				M_52_2022 
-				X_52_2021
-				X_52_2022
-				list_fl_cotton.csv
+	
+ Makes the user interface using streamlit.
+
+ Takes inputs from user
+
+ Creates graphs 
+
+ Allows users to download csv or xls files.
+
+  calls:
+
+   lookup.py. 
+
+  Uses: 			
+  	(2) images to make thumbnail and logo.		
+   	
+    	(1) video for demo
+     
+	(6) csv files
+				
+    		areas (list of trade areas)
+		
+  		(M for import, X for export)
+		
+  		M_52_2021 
+		
+  		M_52_2022 
+			
+   		X_52_2021
+		
+  		X_52_2022
+		
+  		list_fl_cotton.csv
 
 lookup.py 
+
 	analyses trade data,
+ 
 	matching countries in trade file with DoL's list of Forced and Child Labor, 
+ 
 	processes these to make pyvis graphs.
+ 
 		is called by: 
+  
 			app.py
+   
 		calls:
+  
 			countryNode.py
 
 countryNode.py
+
 	creates a class Node
+ 
 	
