@@ -31,9 +31,7 @@ This app was built for Verite and is not affiliated with UN Comtrade in any way.
 SAMPLE USE
 
 One live instance as a sample of what it looks like and does, is hosted for free at the streamlit cloud. The URL is: 
-
-https://arshsinghphd-forcedlaborrisk-github-io-app-5pqff6.streamlit.app
-
+	https://arshsinghphd-forcedlaborrisk-github-io-app-5pqff6.streamlit.app
 You may need to ask to "get this app up" and wait for streamlit to spin the container.
 
 
