@@ -39,12 +39,9 @@ For technical clarifications or comments, write to:
 1. FILES and FOLDERS:
 	
  The repo has three functions (python3): 
-
- 	app.py, 
-
- 	lookup.py, and 
-
- 	countryNode.py.
+ 	1. app.py, 
+  	2. lookup.py, and 
+	3.countryNode.py.
 
 A list of packages needed to create the docker/venv
 	
@@ -79,7 +76,8 @@ app.py
    lookup.py. 
 
   Uses: 			
-  	(2) images to make thumbnail and logo.		
+
+	(2) images to make thumbnail and logo.		
    	
     	(1) video for demo
      
