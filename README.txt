@@ -89,10 +89,9 @@ app.py
 		(6) csv files
 			list_fl_cotton (list of areas known to have with forced labor in cotton trade/production)
 			areas (list of trade areas)
-			(M for import, X for export)
-			M_52_2021 
+			M_52_2021 (M for import, 52-Cotton, YYYY) 
 			M_52_2022 
-			X_52_2021
+			X_52_2021 (X for export, 52-Cotton, YYYY)
 			X_52_2022
 			
 	
