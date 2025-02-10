@@ -1,4 +1,4 @@
-import lookup_repeatCountries as lookup
+import lookup as lookup
 
 
 import math
@@ -223,3 +223,4 @@ with download_notice:
                        mime = 'xls')
     col3.download_button(".csv", csv, file_name='Table.csv', 
                        mime = 'csv')
+    
