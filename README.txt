@@ -92,14 +92,14 @@ For technical clarifications or comments, write to:
 
 app.py 
 	Makes the user interface using streamlit.
-	Takes inputs from user
-	Creates graphs 
+	Takes inputs from user.
+	Calls lookup.py to create and displays pyvis graphs.
 	Allows users to download csv or xls files.
 
-	calls:
+	Calls:
 		lookup.py. 
 
-	uses: 
+	Uses: 
 		(2) images to make thumbnail and logo. 
 		(1) video for demo
 		(6) csv files
@@ -112,19 +112,19 @@ app.py
 			
 	
 lookup.py 
-	analyses trade data,
-	matches countries in trade file with DoL's list, 
-	processes these to make pyvis graphs.
+	Analyses trade data.
+	Matches countries in trade file with DoL's list.
+	Processes these to make pyvis graphs.
  
-	is called by: 
+	Is called by: 
 		app.py
    
-	calls:
+	Calls:
 		countryNode.py
 
 countryNode.py
-	creates a class Node
+	Creates a class "Node".
 
-	is called by:
+	Is called by:
 		lookup.py
 	
