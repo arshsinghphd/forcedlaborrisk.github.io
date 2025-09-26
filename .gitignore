@@ -2,4 +2,4 @@ OpenTradeDummy/
 __pycache__/
 lib/
 images/result.html
-.DS*
+.DS_Store
